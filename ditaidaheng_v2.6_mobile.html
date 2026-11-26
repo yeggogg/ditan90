@@ -1,0 +1,3115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b84336'/%3E%3Cpath d='M10 26 L18 12 L46 12 L54 26 Z' fill='%23d6a133' stroke='%234a3525' stroke-width='3'/%3E%3Crect x='14' y='26' width='36' height='22' rx='3' fill='%23faf5ea' stroke='%234a3525' stroke-width='3'/%3E%3Ccircle cx='22' cy='52' r='5' fill='%234a3525'/%3E%3Ccircle cx='42' cy='52' r='5' fill='%234a3525'/%3E%3C/svg%3E">
+<title>地摊大亨90天 · 手机版 V2.6</title>
+<style>
+:root {
+  --red: #b84336;
+  --red-dark: #8e3025;
+  --red-light: #d15b4d;
+  --mustard: #d6a133;
+  --mustard-dark: #a87b1e;
+  --mint: #5a9681;
+  --mint-dark: #3f7361;
+  --kraft: #efe4ce;
+  --kraft-deep: #e3d2b4;
+  --paper: #faf5ea;
+  --brown: #4a3525;
+  --brown-soft: #6e5744;
+  --ink-green: #2f5241;
+  --gray: #6e655c;
+  --line: #d4c2a3;
+  --danger: #b53028;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --topbar-h: 48px;
+  --font-scale: 1;
+}
+@media (min-width: 768px) {
+  :root { --topbar-h: 52px; }
+}
+body.large-font { --font-scale: 1.12; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: #d8c8ad;
+  color: var(--brown);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  font-size: calc(14px * var(--font-scale));
+  line-height: 1.45;
+  overflow: hidden;
+  user-select: none;
+}
+body.paper-tex .app-shell {
+  background-color: var(--kraft);
+  background-image:
+    radial-gradient(rgba(74,53,37,0.045) 1px, transparent 0),
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(138,112,82,0.08) 28px);
+  background-size: 16px 16px, 100% 28px;
+}
+body.reduce-motion * { transition: none !important; animation: none !important; }
+body.hide-illus .illus-wrap { display: none !important; }
+
+.app-shell {
+  max-width: 540px;
+  height: 100%;
+  margin: 0 auto;
+  background: var(--kraft);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 28px rgba(58,40,24,0.28);
+  overflow: hidden;
+}
+/* 桌面宽屏响应式布局 (V2.6 P3 #17) */
+@media (min-width: 768px) {
+  .app-shell { max-width: 960px; }
+  .desktop-cols {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .start-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+}
+
+/* 顶栏：褪色红铁皮招牌质感，手机48px / 桌面52px */
+.topbar {
+  height: calc(var(--topbar-h) + var(--safe-top));
+  padding-top: var(--safe-top);
+  padding-left: 8px;
+  padding-right: 8px;
+  background: linear-gradient(180deg, var(--red-light) 0%, var(--red) 14%, var(--red) 86%, var(--red-dark) 100%);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-bottom: 2px solid #6b221a;
+  box-shadow: inset 0 1px 0 rgba(255,245,230,0.25), 0 2px 4px rgba(0,0,0,0.18);
+  flex-shrink: 0;
+  z-index: 20;
+  white-space: nowrap;
+}
+.topbar.hidden-on-title, .step-bar.hidden-on-title, .bottom-nav.hidden-on-title {
+  display: none !important;
+}
+.topbar-left {
+  display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1;
+}
+.day-badge {
+  background: #6b221a;
+  border: 1px solid rgba(250,245,234,0.35);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #fce8b2;
+  flex-shrink: 0;
+}
+.cash-pill {
+  background: rgba(58,20,14,0.38);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topbar-actions {
+  display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.tb-btn {
+  background: var(--paper);
+  color: var(--brown);
+  border: 1.5px solid var(--brown);
+  border-bottom-width: 3px;
+  border-radius: 7px;
+  height: 30px;
+  padding: 0 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+  white-space: nowrap;
+}
+.tb-btn:active { transform: translateY(1px); border-bottom-width: 1.5px; }
+.tb-btn.rest-btn { background: #fce8b2; color: #5e3809; border-color: #6b4610; }
+.tb-btn.icon-only { width: 30px; padding: 0; }
+
+/* 手机步骤区：严格56-72px，单行优先最多两行，320px可用 */
+.step-bar {
+  min-height: 58px;
+  max-height: 72px;
+  padding: 6px 8px;
+  background: var(--kraft-deep);
+  border-bottom: 1.5px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-shrink: 0;
+  overflow: hidden;
+  z-index: 15;
+}
+.step-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.step-pill {
+  flex: 1;
+  min-width: 0;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  padding: 5px 4px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray);
+  cursor: pointer;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.step-pill.active {
+  background: var(--ink-green);
+  color: var(--paper);
+  border-color: #1f3b2e;
+  box-shadow: 0 2px 0 #1f3b2e;
+}
+.step-pill.done {
+  background: #e1efe9;
+  color: var(--ink-green);
+  border-color: var(--mint);
+}
+.step-meta {
+  font-size: 11px;
+  color: var(--brown-soft);
+  text-align: right;
+  line-height: 1.25;
+  flex-shrink: 0;
+  max-width: 110px;
+  overflow: hidden;
+}
+.step-meta strong { color: var(--red-dark); display: block; font-size: 12px; }
+
+.main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 10px 18px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 账本纸卡片 */
+.card {
+  background: var(--paper);
+  border: 1.5px solid #cbb692;
+  border-radius: 10px;
+  padding: 10px 11px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 0 rgba(74,53,37,0.12);
+}
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed var(--line);
+}
+.card-title {
+  font-weight: 800; font-size: 14px; color: var(--brown);
+  display: flex; align-items: center; gap: 5px;
+}
+.tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+.tag-red { background: #f8dfdc; color: var(--red-dark); border-color: #dfa69f; }
+.tag-yellow { background: #fbf0cf; color: #7e570c; border-color: #e3c26b; }
+.tag-mint { background: #dff1ea; color: var(--ink-green); border-color: #9ecbb9; }
+.tag-gray { background: #ebe4d6; color: var(--gray); border-color: #cfc3ae; }
+
+/* 搪瓷感圆角厚按钮 */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  border-radius: 9px;
+  border: 1.5px solid var(--brown);
+  border-bottom-width: 3.5px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--brown);
+  transition: transform 0.08s;
+  min-height: 36px;
+}
+.btn:active:not(:disabled) { transform: translateY(1.5px); border-bottom-width: 2px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--red); color: var(--paper); border-color: #6b221a; }
+.btn-mint { background: var(--mint); color: var(--paper); border-color: #2c5546; }
+.btn-yellow { background: var(--mustard); color: #3d2807; border-color: #7a5612; }
+.btn-sm { padding: 4px 8px; font-size: 12px; min-height: 30px; border-bottom-width: 2.5px; }
+.btn-block { width: 100%; }
+
+/* 治疗账户进度条 */
+.med-bar-wrap {
+  background: #e9dcc4;
+  border: 1px solid #c9b491;
+  border-radius: 8px;
+  padding: 7px 9px;
+  margin-bottom: 10px;
+}
+.med-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; margin-bottom: 4px; gap: 6px; flex-wrap: wrap; }
+.progress-track {
+  height: 10px; background: #d4c3a6; border-radius: 6px; overflow: hidden; border: 1px solid #b59f7a;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--mint), var(--ink-green)); transition: width 0.3s;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.stat-box {
+  background: #f5ecdc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+.stat-label { font-size: 11px; color: var(--gray); }
+.stat-val { font-size: 14.5px; font-weight: 800; color: var(--brown); word-break: break-all; }
+.stat-val.pos { color: var(--ink-green); }
+.stat-val.neg { color: var(--danger); }
+
+.row-line {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px dotted #d7c7aa;
+  font-size: 13px;
+  gap: 8px;
+}
+.row-line:last-child { border-bottom: none; }
+
+/* 折叠车辆卡片 */
+.cart-acc {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fdf9f1;
+  margin-bottom: 7px;
+  overflow: hidden;
+}
+.cart-acc-head {
+  padding: 7px 9px;
+  display: flex; justify-content: space-between; align-items: center; gap: 6px;
+  cursor: pointer;
+  background: #f5ecdc;
+}
+.cart-acc-body {
+  padding: 8px 9px;
+  border-top: 1px dashed var(--line);
+}
+
+.stepper {
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.stepper button {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1.5px solid var(--brown); background: #f3e8d2;
+  color: var(--brown); font-weight: 800; font-size: 14px; cursor: pointer;
+}
+.stepper span {
+  min-width: 34px; text-align: center; font-weight: 800; font-size: 13px;
+}
+
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 205px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--brown);
+  background: #e6d7bd;
+  margin-bottom: 8px;
+}
+.canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+.canvas-hud {
+  position: absolute; top: 6px; left: 6px; right: 6px;
+  display: flex; justify-content: space-between; align-items: center;
+  pointer-events: none;
+}
+.hud-chip {
+  background: rgba(74,53,37,0.82);
+  color: #faf5ea;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 7px; border-radius: 6px;
+}
+
+.bottom-nav {
+  padding: 6px 6px calc(6px + var(--safe-bottom));
+  background: #dfd0b4;
+  border-top: 2px solid #bfa984;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  flex-shrink: 0;
+  z-index: 20;
+}
+.nav-item {
+  background: var(--paper);
+  border: 1.5px solid #bfa984;
+  border-bottom-width: 3px;
+  border-radius: 8px;
+  padding: 5px 2px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brown-soft);
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+}
+.nav-item.active {
+  background: var(--red);
+  color: var(--paper);
+  border-color: #6b221a;
+}
+.nav-ico { font-size: 14px; line-height: 1.1; }
+
+.toast-container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(68px + var(--safe-bottom));
+  width: calc(100% - 24px);
+  max-width: 480px;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.toast {
+  background: rgba(58, 40, 24, 0.94);
+  color: #faf5ea;
+  border: 1.5px solid var(--mustard);
+  border-radius: 9px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
+  text-align: center;
+  max-width: 100%;
+  pointer-events: auto;
+}
+.toast.important { background: #6b221a; border-color: #fce8b2; }
+
+.modal-mask {
+  position: fixed; inset: 0;
+  background: rgba(38, 25, 14, 0.65);
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.modal-mask.open { display: flex; }
+.modal-box {
+  width: 100%; max-width: 440px; max-height: 86vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border: 2.5px solid var(--brown);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+}
+.modal-title {
+  font-size: 16px; font-weight: 800; color: var(--red-dark);
+  margin: 0 0 8px; padding-bottom: 6px; border-bottom: 1.5px dashed var(--line);
+}
+.modal-actions {
+  display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; flex-wrap: wrap;
+}
+
+.start-screen {
+  position: absolute; inset: 0; z-index: 40;
+  background: var(--kraft);
+  overflow-y: auto;
+  padding: calc(14px + var(--safe-top)) 14px calc(22px + var(--safe-bottom));
+  display: flex; flex-direction: column; gap: 10px;
+}
+.signboard-hero {
+  background: linear-gradient(180deg, var(--red-light), var(--red) 20%, var(--red-dark));
+  color: var(--paper);
+  border: 2.5px solid #5c1b14;
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+  box-shadow: 0 4px 0 #5c1b14;
+}
+.signboard-hero h1 { margin: 4px 0 4px; font-size: 22px; letter-spacing: 2px; color: #fce8b2; }
+.signboard-hero p { margin: 0; font-size: 12px; opacity: 0.95; }
+
+.diff-card {
+  background: var(--paper);
+  border: 2px solid #cbb692;
+  border-radius: 10px;
+  padding: 9px 11px;
+  cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.diff-card.selected {
+  border-color: var(--red);
+  background: #fff8eb;
+  box-shadow: 0 0 0 2px rgba(184,67,54,0.2);
+}
+
+@media (max-width: 359px) {
+  .topbar { padding-left: 5px; padding-right: 5px; gap: 4px; }
+  .tb-btn { padding: 0 5px; font-size: 11px; }
+  .step-bar { padding: 5px 5px; gap: 4px; }
+  .step-pill { font-size: 10px; padding: 4px 2px; }
+  .step-meta { max-width: 78px; font-size: 10px; }
+  .grid-2 { gap: 6px; }
+  .card { padding: 8px 9px; }
+}
+
+.advice-banner {
+  background: #fbf2d9;
+  border: 1.5px solid var(--mustard);
+  border-radius: 8px;
+  padding: 7px 9px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+}
+.warn-banner {
+  background: #f9e3e0;
+  border: 1.5px solid var(--danger);
+  border-radius: 8px;
+  padding: 7px 9px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--red-dark);
+}
+.input-num {
+  width: 68px; padding: 4px 6px; border-radius: 6px;
+  border: 1.5px solid var(--brown); background: #fff; color: var(--brown);
+  font-weight: 700; font-size: 12.5px; text-align: center;
+}
+select.retro-select {
+  padding: 6px 8px; border-radius: 7px;
+  border: 1.5px solid var(--brown); background: #fff; color: var(--brown);
+  font-weight: 700; font-size: 12.5px;
+}
+.illus-banner { width: 100%; height: 64px; display: block; margin-bottom: 4px; }
+.small-note { font-size: 11.5px; color: var(--gray); }
+.ok-badge { color: var(--ink-green); font-weight: 800; }
+.warn-badge { color: var(--danger); font-weight: 800; }
+.public-row {
+  background: #f7ebd7;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-top: 6px;
+  border: 1px dashed #c8a97e;
+}
+</style>
+</head>
+<body class="paper-tex">
+<div class="app-shell" id="appShell">
+
+  <!-- 顶栏：标题页时隐藏假数据 (V2.6 P3 #21) -->
+  <header class="topbar hidden-on-title" id="topbar">
+    <div class="topbar-left">
+      <span class="day-badge" id="tbDay">第1/90天</span>
+      <span class="cash-pill" id="tbCash">现金 ¥3,000</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="tb-btn rest-btn" id="btnRest" title="营业中暂停或老板休息">歇一会</button>
+      <button class="tb-btn icon-only" id="btnSound" title="音效开关">🔊</button>
+      <button class="tb-btn icon-only" id="btnSettings" title="设置">⚙️</button>
+    </div>
+  </header>
+
+  <!-- 手机营业操作步骤区：56-72px -->
+  <div class="step-bar hidden-on-title" id="stepBar">
+    <div class="step-pills">
+      <button class="step-pill active" id="stepBtn1" data-step="prep">1.采购备料</button>
+      <button class="step-pill" id="stepBtn2" data-step="sell">2.出摊营业</button>
+      <button class="step-pill" id="stepBtn3" data-step="settle">3.日结账本</button>
+    </div>
+    <div class="step-meta" id="stepMeta">
+      <strong id="metaWeather">☀️ 24°C</strong>
+      <span id="metaFatigue">疲劳 0/100</span>
+    </div>
+  </div>
+
+  <!-- 主内容区 -->
+  <main class="main-scroll" id="mainScroll"></main>
+
+  <!-- 底部主导航 -->
+  <nav class="bottom-nav hidden-on-title" id="bottomNav">
+    <button class="nav-item active" data-tab="operate"><span class="nav-ico">🍢</span><span>今日经营</span></button>
+    <button class="nav-item" data-tab="fleet"><span class="nav-ico">🛒</span><span>车队与人</span></button>
+    <button class="nav-item" data-tab="center"><span class="nav-ico">🏭</span><span>备料中心</span></button>
+    <button class="nav-item" data-tab="ledger"><span class="nav-ico">📒</span><span>账本预测</span></button>
+    <button class="nav-item" data-tab="fund"><span class="nav-ico">🏥</span><span>治疗账户</span></button>
+  </nav>
+
+  <!-- 开局与难度选择遮罩 -->
+  <section class="start-screen" id="startScreen">
+    <div class="signboard-hero">
+      <div class="illus-wrap" id="heroSvgWrap"></div>
+      <h1>地摊大亨90天</h1>
+      <p>90年代街头烟火 · V2.6 手机/桌面响应式版</p>
+    </div>
+    <div class="start-grid">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">📖 创业背景</span>
+          <span class="tag tag-red">90天倒计时</span>
+        </div>
+        <div style="font-size:12.5px;">
+          38岁离开大厂，手头只剩一台二手三轮车和一笔启动资金。你必须在<strong>90天内</strong>，把真正赚到的钱<strong>实际转入母亲的治疗账户</strong>达标。现金、车辆估值和库存均不计入通关额。
+        </div>
+        <div class="small-note" style="margin-top:8px;">
+          提示：转账不可撤回，每日关注明天的天气与事件预告，合理定价与扩充车队是通关关键。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">🎯 选择难度档位</span>
+          <span class="small-note">不暗改售价与客流</span>
+        </div>
+        <div id="diffList" style="display:flex;flex-direction:column;gap:7px;"></div>
+        <label style="display:flex;align-items:center;gap:6px;margin-top:9px;font-size:12.5px;cursor:pointer;">
+          <input type="checkbox" id="chkSingleChallenge">
+          <span><strong>单车精耕挑战</strong>（限1辆车，目标下调至60%，第18天起攒熟客）</span>
+        </label>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;max-width:520px;width:100%;margin:0 auto;">
+      <button class="btn btn-primary btn-block" id="btnStartNew">推车出摊（新开局）</button>
+      <button class="btn btn-mint btn-block" id="btnContinue" style="display:none;">继续上次进度</button>
+    </div>
+  </section>
+
+  <!-- 非阻塞提示层 -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- 阻塞确认弹窗 -->
+  <div class="modal-mask" id="modalMask">
+    <div class="modal-box" id="modalBox"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ==================== 1. V2.6 核心常量与参数表 ==================== */
+  const DESIGN_VER = 'V2.6';
+  const SAVE_VERSION = 4;
+  const SAVE_KEY = 'stall_tycoon_90d_v4';
+  const BACKUP_KEY = 'stall_tycoon_90d_v4_corrupt_backup';
+  const SETTINGS_KEY = 'stall_tycoon_settings_v4';
+  const TOTAL_DAYS = 90;
+
+  // V2.6 P3 #23：清理无用常量 cashRate
+  const DIFFICULTIES = {
+    novice:  { id: 'novice',  name: '新手', target: 780000,  startCash: 4050, desc: '目标78万 · 初始资金宽裕' },
+    normal:  { id: 'normal',  name: '普通', target: 1000000, startCash: 3000, desc: '目标100万 · 标准创业压力' },
+    skilled: { id: 'skilled', name: '熟练', target: 1080000, startCash: 2760, desc: '目标108万 · 容错空间收紧' },
+    expert:  { id: 'expert',  name: '专家', target: 1200000, startCash: 2550, desc: '目标120万 · 极致现金流考验' }
+  };
+
+  const STALL_TYPES = {
+    bbq: {
+      id: 'bbq', name: '烧烤摊', unlockDay: 1, icon: '🍢',
+      unitCost: 8.5, // 面饼2+香肠4+鸡蛋1.5+蔬菜1
+      recipeDesc: '面饼2元 + 香肠4元 + 鸡蛋1.5元 + 蔬菜1元',
+      baseDemand: 1.00, prepHoursPer100: 2.1, defaultPrice: 19, shelfLife: 2,
+      priceTol: 1.00,
+      locFit: { university: 1.06, factory: 0.98, plaza: 1.10, subway: 0.96, residential: 1.15, mall: 1.18 }
+    },
+    snack: {
+      id: 'snack', name: '小吃摊', unlockDay: 11, icon: '🥟',
+      unitCost: 7.5, recipeDesc: '面皮2.5元 + 馅料3元 + 调料油2元',
+      baseDemand: 1.05, prepHoursPer100: 1.7, defaultPrice: 18, shelfLife: 2,
+      priceTol: 0.96,
+      locFit: { university: 1.12, factory: 1.42, plaza: 1.02, subway: 1.06, residential: 1.00, mall: 1.08 }
+    },
+    drink: {
+      id: 'drink', name: '饮品摊', unlockDay: 11, icon: '🧋',
+      unitCost: 6.5, recipeDesc: '茶底2元 + 奶浆2.5元 + 小料杯具2元',
+      baseDemand: 1.08, prepHoursPer100: 1.4, defaultPrice: 20, shelfLife: 3,
+      priceTol: 1.08,
+      locFit: { university: 1.22, factory: 0.92, plaza: 1.08, subway: 1.25, residential: 0.96, mall: 1.22 }
+    },
+    cold: {
+      id: 'cold', name: '冷饮摊', unlockDay: 11, icon: '🍧',
+      unitCost: 6.0, recipeDesc: '冰沙基底2元 + 水果糖浆2.5元 + 冰杯1.5元',
+      baseDemand: 1.35, prepHoursPer100: 1.3, defaultPrice: 19, shelfLife: 2,
+      priceTol: 1.04,
+      locFitNormal: { university: 1.10, factory: 0.90, plaza: 1.05, subway: 1.10, residential: 1.00, mall: 1.10 },
+      locFitHot:    { university: 1.22, factory: 1.00, plaza: 1.14, subway: 1.16, residential: 1.02, mall: 1.18 }
+    }
+  };
+
+  // V2.6 P1 #8：拉大地点人流、心理价与价格弹性差异
+  const LOCATIONS = {
+    factory:     { id: 'factory',     name: '工厂区',   psychPrice: 15, sigma: 0.34, baseTraffic: 215, dailyFee: 35, desc: '工人客群稳定、对价格敏感，小吃下班时段大卖' },
+    university:  { id: 'university',  name: '大学城',   psychPrice: 16, sigma: 0.42, baseTraffic: 240, dailyFee: 45, desc: '年轻学生多，午晚高峰明显，饮品冷饮和小吃热销' },
+    residential: { id: 'residential', name: '居民区',   psychPrice: 17, sigma: 0.44, baseTraffic: 205, dailyFee: 40, desc: '晚间客流稳健，最容易攒熟客回头率' },
+    subway:      { id: 'subway',      name: '地铁口',   psychPrice: 20, sigma: 0.48, baseTraffic: 260, dailyFee: 65, desc: '通勤流速极快，适合饮品与便携出餐' },
+    plaza:       { id: 'plaza',       name: '广场',     psychPrice: 22, sigma: 0.50, baseTraffic: 250, dailyFee: 60, desc: '休闲客流起伏大，遇演出与好天气爆发力强' },
+    mall:        { id: 'mall',        name: '商业广场', psychPrice: 24, sigma: 0.54, baseTraffic: 285, dailyFee: 90, desc: '高消费核心商圈，客单价承受力最高，摊位费也最贵' }
+  };
+
+  const VEHICLE_TYPES = {
+    tricycle: { id: 'tricycle', name: '三轮车', price: 3200, cap: 240, maint: 15, transportEff: 1.0, desc: '初期低成本、小容量' },
+    van:      { id: 'van',      name: '面包车', price: 9500, cap: 450, maint: 35, transportEff: 1.25, desc: '中期多摊、较高装载量' },
+    truck:    { id: 'truck',    name: '小货车', price: 22000, cap: 720, maint: 65, transportEff: 1.5, desc: '后期大规模运输主力' }
+  };
+
+  // V2.6 P1 #8：员工实质影响载量/装卸效率、出摊转化与多车协同
+  const STAFF_POOL = [
+    { role: 'prep',  name: '备料阿姨', wage: 110, hours: 8, prepEff: 1.30, sellEff: 0.80, capBonus: 45, desc: '专攻切配串料，减少老板疲劳，每车增载+45份' },
+    { role: 'sales', name: '麻利小伙', wage: 135, hours: 8, prepEff: 0.90, sellEff: 1.30, capBonus: 65, desc: '出餐手脚快，提升成交转化，每车增载+65份' },
+    { role: 'all',   name: '全能店长', wage: 190, hours: 9, prepEff: 1.25, sellEff: 1.25, capBonus: 90, desc: '统筹多车协作，免除多车拥堵折损，每车增载+90份' }
+  ];
+
+  const ECON = {
+    mgmtFee: (n) => (n <= 3 ? 30 : (n <= 5 ? 60 : 100)),
+    sixthCartGuarantee: 150,
+    lv2BuildCost: 6500,
+    lv2Maint: 60,
+    lv2Cap: 1200,
+    sixCartCenterBonus: 0.105,
+    lv3UpgradeCost: 19000,
+    lv3Maint: 160,
+    lv3UtilThreshold: 0.75,
+    lv3SaveMultiplier: 1.00,
+    moveFee: 100,
+    moveCooldown: 7,
+    transformCost: 1200,
+    transformDownDays: 1,
+    transformCooldown: 14,
+    crossCompRate: 0.08,
+    sameCompRate: 0.16,
+    safetyBufferDays: 14,
+    maxPaybackDays: 30,
+    adviceHysteresisDays: 3,
+    singleChallengeTargetRatio: 0.60 // V2.6 P0 #4：单车精耕目标校准至60%（新手46.8万/普通60万）
+  };
+
+  const CITY_EVENTS = [
+    { id: 'none', name: '平日街市', desc: '今天街头秩序平稳，按常规人流营业。', scope: 'all', mult: 1.00, dur: 1 },
+    { id: 'campus_fest', name: '高校社团节', desc: '大学城举办社团招新与晚会，学生客流大涨。', scope: 'university', mult: 1.34, dur: 2 },
+    { id: 'factory_ot', name: '工厂赶工加班', desc: '工厂区夜班加餐需求旺盛，下班客流集中。', scope: 'factory', mult: 1.32, dur: 2 },
+    { id: 'plaza_show', name: '广场露天演出', desc: '广场晚上有文艺汇演，逛街休闲人群增多。', scope: 'plaza', mult: 1.38, dur: 2 },
+    { id: 'subway_peak', name: '地铁展会散场', desc: '附近展会散场，地铁口人流明显增加。', scope: 'subway', mult: 1.30, dur: 1 },
+    { id: 'mall_sale', name: '商圈店庆促销', desc: '商业广场打折引流，消费意愿提升。', scope: 'mall', mult: 1.30, dur: 2 },
+    { id: 'community_fair', name: '社区便民集市', desc: '居民区晚间人声鼎沸，街坊光顾频繁。', scope: 'residential', mult: 1.28, dur: 2 },
+    { id: 'city_control', name: '临时交通管制', desc: '部分路段临时疏导，全城街头人流回落。', scope: 'all', mult: 0.84, dur: 1 }
+  ];
+
+  /* ==================== 2. 确定性随机数 & 存储适配层 ==================== */
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return function() {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  const StorageAdapter = {
+    degraded: false,
+    getRaw(key) {
+      try {
+        if (typeof wx !== 'undefined' && wx.getStorageSync) return wx.getStorageSync(key) || null;
+        return window.localStorage.getItem(key);
+      } catch (e) { this.degraded = true; return null; }
+    },
+    get(key) {
+      try {
+        const v = this.getRaw(key);
+        if (!v) return null;
+        return typeof v === 'string' ? JSON.parse(v) : v;
+      } catch (e) { return { __corrupt: true, raw: this.getRaw(key) }; }
+    },
+    set(key, val) {
+      try {
+        const s = typeof val === 'string' ? val : JSON.stringify(val);
+        if (typeof wx !== 'undefined' && wx.setStorageSync) { wx.setStorageSync(key, s); return true; }
+        window.localStorage.setItem(key, s);
+        return true;
+      } catch (e) { this.degraded = true; return false; }
+    },
+    remove(key) {
+      try {
+        if (typeof wx !== 'undefined' && wx.removeStorageSync) { wx.removeStorageSync(key); return true; }
+        window.localStorage.removeItem(key);
+        return true;
+      } catch (e) { this.degraded = true; return false; }
+    }
+  };
+
+  /* ==================== 3. Web Audio 复古合成音效 ==================== */
+  const SFX = {
+    ctx: null, enabled: true,
+    unlock() {
+      if (!this.ctx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) this.ctx = new AC();
+      }
+      if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+    },
+    tone(freq, dur, type, vol, slideTo) {
+      if (!this.enabled) return;
+      this.unlock();
+      if (!this.ctx) return;
+      try {
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type || 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, now + dur);
+        gain.gain.setValueAtTime(vol || 0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + dur);
+      } catch (e) {}
+    },
+    click() { this.tone(420, 0.045, 'triangle', 0.06, 300); },
+    coin()  { this.tone(980, 0.08, 'sine', 0.06, 1320); setTimeout(() => this.tone(1320, 0.11, 'sine', 0.05), 55); },
+    bell()  { this.tone(660, 0.14, 'triangle', 0.08, 880); setTimeout(() => this.tone(880, 0.2, 'sine', 0.07), 100); },
+    warn()  { this.tone(240, 0.16, 'sawtooth', 0.05, 180); }
+  };
+
+  /* ==================== 4. 内嵌90年代Q版复古SVG插画 ==================== */
+  const SVG = {
+    hero() {
+      return `<svg class="illus-banner" viewBox="0 0 360 76" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="54" width="360" height="22" fill="#7d2920" opacity="0.5"/>
+        <g transform="translate(22,12)">
+          <rect x="6" y="24" width="58" height="24" rx="4" fill="#efe4ce" stroke="#4a3525" stroke-width="2.5"/>
+          <path d="M2 24 L14 8 L58 8 L68 24 Z" fill="#d6a133" stroke="#4a3525" stroke-width="2.5"/>
+          <path d="M14 8 L20 24 M28 8 L30 24 M42 8 L44 24 M54 8 L56 24" stroke="#b84336" stroke-width="3"/>
+          <circle cx="18" cy="52" r="7" fill="#4a3525"/><circle cx="18" cy="52" r="3" fill="#efe4ce"/>
+          <circle cx="52" cy="52" r="7" fill="#4a3525"/><circle cx="52" cy="52" r="3" fill="#efe4ce"/>
+          <text x="35" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e3025">烧烤</text>
+        </g>
+        <g transform="translate(148,10)">
+          <circle cx="32" cy="22" r="15" fill="#f7d5b0" stroke="#4a3525" stroke-width="2.5"/>
+          <path d="M18 17 Q32 4 46 17 Z" fill="#4a3525"/>
+          <circle cx="27" cy="22" r="2" fill="#4a3525"/><circle cx="37" cy="22" r="2" fill="#4a3525"/>
+          <path d="M28 28 Q32 32 36 28" fill="none" stroke="#4a3525" stroke-width="2" stroke-linecap="round"/>
+          <rect x="17" y="37" width="30" height="20" rx="6" fill="#5a9681" stroke="#4a3525" stroke-width="2.5"/>
+          <rect x="23" y="42" width="18" height="15" rx="2" fill="#faf5ea" stroke="#4a3525" stroke-width="1.5"/>
+        </g>
+        <g transform="translate(264,18)">
+          <rect x="4" y="8" width="66" height="40" rx="5" fill="#a87b1e" stroke="#4a3525" stroke-width="2.5"/>
+          <rect x="9" y="13" width="56" height="30" rx="2" fill="#efe4ce" stroke="#4a3525" stroke-width="1.5"/>
+          <line x1="9" y1="24" x2="65" y2="24" stroke="#4a3525" stroke-width="2"/>
+          <line x1="22" y1="13" x2="22" y2="43" stroke="#8e3025" stroke-width="1.5"/>
+          <line x1="37" y1="13" x2="37" y2="43" stroke="#8e3025" stroke-width="1.5"/>
+          <line x1="52" y1="13" x2="52" y2="43" stroke="#8e3025" stroke-width="1.5"/>
+          <circle cx="22" cy="19" r="3.5" fill="#b84336"/><circle cx="37" cy="31" r="3.5" fill="#b84336"/>
+          <circle cx="52" cy="37" r="3.5" fill="#b84336"/><circle cx="22" cy="34" r="3.5" fill="#d6a133"/>
+        </g>
+      </svg>`;
+    },
+    cartIcon(stallId) {
+      const col = { bbq: '#b84336', snack: '#d6a133', drink: '#5a9681', cold: '#4b8696' }[stallId] || '#b84336';
+      return `<svg width="34" height="26" viewBox="0 0 44 34" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <path d="M4 12 L10 3 L34 3 L40 12 Z" fill="${col}" stroke="#4a3525" stroke-width="2"/>
+        <rect x="7" y="12" width="30" height="14" rx="2" fill="#faf5ea" stroke="#4a3525" stroke-width="2"/>
+        <circle cx="14" cy="29" r="4" fill="#4a3525"/><circle cx="30" cy="29" r="4" fill="#4a3525"/>
+      </svg>`;
+    }
+  };
+
+  /* ==================== 5. 天气与事件生成（固定Seed可复现） ==================== */
+  function generateWeatherSeries(seed) {
+    const rng = mulberry32(seed || 202606);
+    const list = [];
+    for (let d = 1; d <= TOTAL_DAYS; d++) {
+      const seasonal = 22 + 6.5 * Math.sin(((d - 12) / TOTAL_DAYS) * Math.PI * 2);
+      const u = rng();
+      let temp;
+      if (u < 0.18) temp = Math.round(30 + rng() * 5);
+      else if (u < 0.68) temp = Math.round(Math.max(20, Math.min(29, seasonal + (rng() - 0.5) * 6)));
+      else temp = Math.round(7 + rng() * 12);
+      const cat = temp >= 30 ? '热天' : (temp >= 20 ? '常温' : (temp >= 10 ? '凉爽' : '寒冷'));
+      const icon = temp >= 30 ? '🔥' : (temp >= 20 ? '☀️' : (temp >= 10 ? '⛅' : '❄️'));
+      const cityHeat = Number((0.92 + rng() * 0.22).toFixed(2));
+      list.push({ day: d, temp, cat, icon, cityHeat });
+    }
+    return list;
+  }
+
+  function generateEventSeries(seed) {
+    const rng = mulberry32((seed || 202606) ^ 0x9E3779B9);
+    const list = [];
+    let activeEvt = CITY_EVENTS[0];
+    let remain = 0;
+    for (let d = 1; d <= TOTAL_DAYS; d++) {
+      if (remain > 0) {
+        remain--;
+        list.push({ ...activeEvt, day: d });
+      } else {
+        if (rng() < 0.48) {
+          const idx = 1 + Math.floor(rng() * (CITY_EVENTS.length - 1));
+          activeEvt = CITY_EVENTS[idx];
+          remain = activeEvt.dur - 1;
+          list.push({ ...activeEvt, day: d });
+        } else {
+          activeEvt = CITY_EVENTS[0];
+          list.push({ ...activeEvt, day: d });
+        }
+      }
+    }
+    return list;
+  }
+
+  /* ==================== 6. 游戏状态、严格存档校验与幂等锁 ==================== */
+  let settings = Object.assign({
+    largeFont: false, paperTex: true, showIllus: true, reduceMotion: false, sound: true
+  }, (() => { const x = StorageAdapter.get(SETTINGS_KEY); return (x && !x.__corrupt) ? x : {}; })());
+
+  let state = null;
+  let ui = {
+    inTitle: true,
+    tab: 'operate',
+    step: 'prep',
+    selectedDiff: 'normal',
+    selling: false,
+    paused: false,
+    sellSpeed: 1,
+    sellProgress: 0,
+    liveAnimId: null,
+    liveCustomers: [],
+    liveFloaters: [],
+    liveDaySim: null,
+    liveSoldCount: 0,
+    liveRevSoFar: 0,
+    expandedCartId: 'cart_1',
+    transferLock: false,
+    settleLock: false
+  };
+
+  function createInitialState(diffId, singleChallenge, customSeed) {
+    const diff = DIFFICULTIES[diffId] || DIFFICULTIES.normal;
+    const weatherSeed = customSeed || Math.floor(100000 + Math.random() * 899999);
+    const eventSeed = weatherSeed + 77;
+    const targetFund = singleChallenge ? Math.round(diff.target * ECON.singleChallengeTargetRatio) : diff.target;
+    return {
+      version: SAVE_VERSION,
+      designVer: DESIGN_VER,
+      difficulty: diff.id,
+      targetFund,
+      singleChallenge: !!singleChallenge,
+      day: 1,
+      dayPhase: 'prep',
+      lastSettledDay: 0, // V2.6 P2 #14：每日仅结算一次守卫
+      finished: false,
+      outcome: null,
+      failReason: '',
+      cash: diff.startCash,
+      treatmentFund: 0,
+      bossFatigue: 0,
+      weatherSeed,
+      eventSeed,
+      weatherSeries: generateWeatherSeries(weatherSeed),
+      eventSeries: generateEventSeries(eventSeed),
+      carts: [
+        {
+          id: 'cart_1',
+          name: '1号摊车',
+          vehicleType: 'tricycle',
+          stallType: 'bbq',
+          location: 'residential',
+          price: 19,
+          prepQty: 100,
+          prevPrice: 19,
+          prevPrepQty: 100,
+          moveCooldown: 0,
+          transformCooldown: 0,
+          downDays: 0,
+          regulars: 0,
+          cumNetProfit: 0,
+          lastReport: null
+        }
+      ],
+      inventory: {
+        bbq: [{ qty: 100, unitCost: 8.5, buyDay: 1, shelfLife: 2 }],
+        snack: [], drink: [], cold: []
+      },
+      staff: [],
+      prepCenter: {
+        level: 1,
+        builtDay: 0,
+        lv3UpgradeDay: 0,
+        lv3PredSave30: 0,
+        lv3ActualSaved: 0,
+        lv3MaintPaid: 0,
+        lv3PaybackDay: null,
+        utilHistory: []
+      },
+      todayOrder: null,
+      orderAccepted: false,
+      history: [],
+      locSamples: {},
+      lv3Log: [],
+      botDecisionLog: [],
+      profitAuditLog: [],
+      unlockLog: [],
+      reminderLog: [],
+      reminderState: {
+        lastExpandAdviceDay: -10,
+        lastFatigueTierDay: '',
+        unlockedDay11: false,
+        pricingGuideShown: false
+      }
+    };
+  }
+
+  // V2.6 P2 #13：严格存档校验与坏档备份
+  function validateAndRepairSave(rawObj) {
+    if (!rawObj || typeof rawObj !== 'object' || rawObj.__corrupt) return { ok: false, reason: '存档格式已损坏' };
+    if (!Number.isInteger(rawObj.day) || rawObj.day < 1 || rawObj.day > TOTAL_DAYS) return { ok: false, reason: '天数异常' };
+    if (typeof rawObj.cash !== 'number' || !Number.isFinite(rawObj.cash)) return { ok: false, reason: '现金字段不是有效数字' };
+    if (typeof rawObj.treatmentFund !== 'number' || !Number.isFinite(rawObj.treatmentFund) || rawObj.treatmentFund < 0) return { ok: false, reason: '治疗账户金额异常' };
+    if (!Array.isArray(rawObj.carts) || rawObj.carts.length === 0) return { ok: false, reason: '车队数据缺失' };
+    if (!rawObj.inventory || typeof rawObj.inventory !== 'object') return { ok: false, reason: '库存台账缺失' };
+    if (!DIFFICULTIES[rawObj.difficulty]) return { ok: false, reason: '难度档位无效' };
+
+    for (const c of rawObj.carts) {
+      if (!c || !VEHICLE_TYPES[c.vehicleType] || !STALL_TYPES[c.stallType] || !LOCATIONS[c.location]) {
+        return { ok: false, reason: '车辆配置字段无效' };
+      }
+      if (typeof c.price !== 'number' || !Number.isFinite(c.price)) c.price = STALL_TYPES[c.stallType].defaultPrice;
+      if (typeof c.prepQty !== 'number' || !Number.isFinite(c.prepQty)) c.prepQty = 80;
+    }
+
+    rawObj.version = SAVE_VERSION;
+    rawObj.designVer = DESIGN_VER;
+    if (typeof rawObj.lastSettledDay !== 'number') rawObj.lastSettledDay = rawObj.dayPhase === 'settle' ? rawObj.day : rawObj.day - 1;
+    if (typeof rawObj.bossFatigue !== 'number' || !Number.isFinite(rawObj.bossFatigue)) rawObj.bossFatigue = 0;
+    if (!Array.isArray(rawObj.staff)) rawObj.staff = [];
+    if (!Array.isArray(rawObj.history)) rawObj.history = [];
+    if (!Array.isArray(rawObj.lv3Log)) rawObj.lv3Log = [];
+    if (!Array.isArray(rawObj.botDecisionLog)) rawObj.botDecisionLog = [];
+    if (!Array.isArray(rawObj.profitAuditLog)) rawObj.profitAuditLog = [];
+    if (!Array.isArray(rawObj.unlockLog)) rawObj.unlockLog = [];
+    if (!Array.isArray(rawObj.reminderLog)) rawObj.reminderLog = [];
+    if (!rawObj.prepCenter) rawObj.prepCenter = { level: 1, builtDay: 0, lv3UpgradeDay: 0, lv3PredSave30: 0, lv3ActualSaved: 0, lv3MaintPaid: 0, lv3PaybackDay: null, utilHistory: [] };
+    if (!Array.isArray(rawObj.prepCenter.utilHistory)) rawObj.prepCenter.utilHistory = [];
+    if (!rawObj.reminderState) rawObj.reminderState = { lastExpandAdviceDay: -10, lastFatigueTierDay: '', unlockedDay11: rawObj.day >= 11, pricingGuideShown: rawObj.day > 3 };
+    if (!rawObj.weatherSeries || rawObj.weatherSeries.length < TOTAL_DAYS) rawObj.weatherSeries = generateWeatherSeries(rawObj.weatherSeed || 202606);
+    if (!rawObj.eventSeries || rawObj.eventSeries.length < TOTAL_DAYS) rawObj.eventSeries = generateEventSeries(rawObj.eventSeed || 202683);
+    if (!rawObj.locSamples) rawObj.locSamples = {};
+    ['bbq', 'snack', 'drink', 'cold'].forEach(k => {
+      if (!Array.isArray(rawObj.inventory[k])) rawObj.inventory[k] = [];
+      rawObj.inventory[k] = rawObj.inventory[k].filter(b => b && Number.isFinite(b.qty) && b.qty > 0 && Number.isFinite(b.unitCost));
+    });
+    return { ok: true, state: rawObj };
+  }
+
+  function saveGame() {
+    if (!state) return;
+    const ok = StorageAdapter.set(SAVE_KEY, state);
+    if (!ok && !StorageAdapter._warned) {
+      StorageAdapter._warned = true;
+      showToast('当前处于隐私/受限模式，进度仅暂存于本次页面。', false);
+    }
+  }
+
+  function saveSettings() {
+    StorageAdapter.set(SETTINGS_KEY, settings);
+    applySettingsToDOM();
+  }
+
+  function applySettingsToDOM() {
+    document.body.classList.toggle('large-font', !!settings.largeFont);
+    document.body.classList.toggle('paper-tex', !!settings.paperTex);
+    document.body.classList.toggle('hide-illus', !settings.showIllus);
+    document.body.classList.toggle('reduce-motion', !!settings.reduceMotion);
+    SFX.enabled = !!settings.sound;
+    const btnS = document.getElementById('btnSound');
+    if (btnS) btnS.textContent = SFX.enabled ? '🔊' : '🔇';
+  }
+
+  /* ==================== 7. V2.6 核心经济、防超卖库存分配与定价曲线 ==================== */
+  function isStallUnlocked(stallId, day) {
+    return (day || state.day) >= STALL_TYPES[stallId].unlockDay;
+  }
+
+  function getBulkDiscount(cartCount) {
+    if (cartCount >= 6) return 0.07;
+    if (cartCount === 5) return 0.06;
+    if (cartCount === 4) return 0.05;
+    return 0;
+  }
+
+  function getStockTotal(stallId, s) {
+    const st = s || state;
+    const batches = (st.inventory && st.inventory[stallId]) || [];
+    return batches.reduce((sum, b) => sum + b.qty, 0);
+  }
+
+  // 员工增载量：平均分摊给各出摊车辆（V2.6 P1 #8）
+  function getEffectiveCartCap(cart, s) {
+    const st = s || state;
+    const baseCap = VEHICLE_TYPES[cart.vehicleType].cap;
+    const activeCount = Math.max(1, st.carts.filter(c => c.downDays <= 0).length);
+    const totalStaffCap = st.staff.reduce((a, e) => a + (e.capBonus || 45), 0);
+    const perCartBonus = Math.round(totalStaffCap / activeCount);
+    // 单车精耕第18天起熟客老手操作额外+25%备货熟练度
+    const singleMastery = (st.singleChallenge && st.day >= 18) ? 80 : 0;
+    return baseCap + perCartBonus + singleMastery;
+  }
+
+  // V2.6 P0 #1：按摊型显式预分配库存，彻底杜绝同类车超卖！
+  function allocateInventoryToCarts(s) {
+    const st = s || state;
+    const alloc = {};      // cartId -> allocated qty
+    const shortage = {};   // cartId -> gap qty (plan > alloc)
+    const remaining = {
+      bbq: getStockTotal('bbq', st),
+      snack: getStockTotal('snack', st),
+      drink: getStockTotal('drink', st),
+      cold: getStockTotal('cold', st)
+    };
+    const totalGapByStall = { bbq: 0, snack: 0, drink: 0, cold: 0 };
+
+    st.carts.forEach(c => {
+      if (c.downDays > 0) {
+        alloc[c.id] = 0;
+        shortage[c.id] = 0;
+        return;
+      }
+      const cap = getEffectiveCartCap(c, st);
+      const want = Math.min(c.prepQty, cap);
+      const avail = remaining[c.stallType] || 0;
+      const got = Math.min(want, avail);
+      remaining[c.stallType] = Math.max(0, avail - got);
+      alloc[c.id] = got;
+      shortage[c.id] = Math.max(0, want - got);
+      totalGapByStall[c.stallType] += shortage[c.id];
+    });
+    return { alloc, shortage, remaining, totalGapByStall };
+  }
+
+  // 先进先出计算消耗/损耗的真实批次进价（买入时锁定，不倒算旧批次 V2.6 P2 #12）
+  function consumeStockFIFO(stallId, qtyNeeded, s, mutate) {
+    const st = s || state;
+    const batches = st.inventory[stallId] || [];
+    let rem = Math.max(0, Math.round(qtyNeeded));
+    let totalCost = 0;
+    let actualConsumed = 0;
+
+    if (mutate) {
+      while (rem > 0 && batches.length > 0) {
+        const take = Math.min(rem, batches[0].qty);
+        totalCost += take * batches[0].unitCost;
+        actualConsumed += take;
+        batches[0].qty -= take;
+        rem -= take;
+        if (batches[0].qty <= 0) batches.shift();
+      }
+    } else {
+      for (let i = 0; i < batches.length && rem > 0; i++) {
+        const take = Math.min(rem, batches[i].qty);
+        totalCost += take * batches[i].unitCost;
+        actualConsumed += take;
+        rem -= take;
+      }
+    }
+    return { qty: actualConsumed, cost: Math.round(totalCost) };
+  }
+
+  // V2.6 P1 #5：移除 0.28 保底，按地点心理价与价格弹性构建峰值在 1.10x~1.30x 的真实定价曲线
+  function getMaxPriceForLocation(locId) {
+    return Math.round(LOCATIONS[locId].psychPrice * 1.8);
+  }
+
+  function calcPriceFactor(price, locId, stallId) {
+    const loc = LOCATIONS[locId];
+    const st = STALL_TYPES[stallId];
+    const ratio = price / loc.psychPrice;
+    if (ratio <= 1.0) {
+      return 1.0 + (1.0 - ratio) * 0.42;
+    }
+    const sigma = loc.sigma * (st.priceTol || 1.0);
+    // 超过心理价后平滑陡降，无高价保底，拉满到1.8倍时需求趋近0.03
+    return Math.max(0.02, Math.exp(-Math.pow((ratio - 1.0) / sigma, 2.15)));
+  }
+
+  function getFatigueTierInfo(f) {
+    if (f >= 100) return { label: '过劳极限', penalty: 0.35, factor: 0.65, cls: 'warn-badge', desc: '触发强制休整' };
+    if (f >= 80)  return { label: '高度疲劳', penalty: 0.22, factor: 0.78, cls: 'warn-badge', desc: '出餐-22%，限制非必要劳动' };
+    if (f >= 60)  return { label: '明显疲劳', penalty: 0.12, factor: 0.88, cls: 'warn-badge', desc: '出餐效率 -12%' };
+    if (f >= 40)  return { label: '轻度疲劳', penalty: 0.05, factor: 0.95, cls: 'small-note', desc: '出餐效率 -5%' };
+    return { label: '精力充沛', penalty: 0, factor: 1.00, cls: 'ok-badge', desc: '无疲劳惩罚' };
+  }
+
+  function getColdTempCoeff(temp) {
+    if (temp >= 30) return 1.10;
+    if (temp >= 20) return 1.15;
+    if (temp >= 10) return 0.90;
+    return 0.55;
+  }
+
+  function getStallLocationFit(stallId, locId, temp) {
+    const st = STALL_TYPES[stallId];
+    if (stallId === 'cold') {
+      return temp >= 30 ? (st.locFitHot[locId] || 1.0) : (st.locFitNormal[locId] || 1.0);
+    }
+    return (st.locFit && st.locFit[locId]) || 1.0;
+  }
+
+  function getTempModifier(stallId, temp) {
+    if (stallId === 'cold') return getColdTempCoeff(temp);
+    if (stallId === 'bbq') return temp < 15 ? 1.10 : (temp >= 30 ? 0.92 : 1.00);
+    if (stallId === 'drink') return temp >= 28 ? 1.14 : (temp < 12 ? 0.84 : 1.00);
+    return temp < 14 ? 1.08 : 1.00;
+  }
+
+  function getDailyFixedCosts(s) {
+    const st = s || state;
+    const n = st.carts.length;
+    const mgmt = ECON.mgmtFee(n);
+    const sixth = n >= 6 ? ECON.sixthCartGuarantee : 0;
+    const vehMaint = st.carts.reduce((acc, c) => acc + VEHICLE_TYPES[c.vehicleType].maint, 0);
+    const locFees = st.carts.reduce((acc, c) => acc + (c.downDays > 0 ? 0 : LOCATIONS[c.location].dailyFee), 0);
+    const wages = st.staff.reduce((acc, e) => acc + e.wage, 0);
+    const centerMaint = st.prepCenter.level === 2 ? ECON.lv2Maint : (st.prepCenter.level === 3 ? ECON.lv3Maint : 0);
+    return { mgmt, sixth, vehMaint, locFees, wages, centerMaint, total: mgmt + sixth + vehMaint + locFees + wages + centerMaint };
+  }
+
+  // 统一扩张建议接口 getExpansionAdvice() (V2.6 P3 #19：满车显示“车队已满”)
+  function getExpansionAdvice(s, targetVehType) {
+    const st = s || state;
+    const maxCarts = st.singleChallenge ? 1 : 6;
+    if (st.carts.length >= maxCarts) {
+      return {
+        isFull: true, affordable: false, worthBuying: false, canBuy: false,
+        price: 0, reasons: [st.singleChallenge ? '单车精耕挑战限制为1辆车' : '已达到车队上限（6辆车）']
+      };
+    }
+    const veh = VEHICLE_TYPES[targetVehType || (st.carts.length < 3 ? 'tricycle' : 'van')];
+    const reasons = [];
+    const affordable = st.cash >= veh.price;
+    if (!affordable) reasons.push(`现金不足（还差 ¥${Math.ceil(veh.price - st.cash).toLocaleString()}）`);
+
+    const fixedAfter = getDailyFixedCosts(st).total + veh.maint + 45 + (st.carts.length + 1 >= 6 ? ECON.sixthCartGuarantee + 40 : (st.carts.length + 1 === 4 ? 30 : 0));
+    const safetyNeed = fixedAfter * ECON.safetyBufferDays;
+    const hasSafety = (st.cash - veh.price) >= safetyNeed;
+    if (!hasSafety) reasons.push(`购车后剩余现金不足14天固定成本安全垫（需留 ¥${Math.ceil(safetyNeed).toLocaleString()}）`);
+
+    const recent7 = st.history.slice(-7);
+    const sum7 = recent7.reduce((a, h) => a + h.totalNetProfit, 0);
+    const profit7Pos = recent7.length >= 3 && sum7 > 0;
+    if (!profit7Pos) reasons.push('最近经营净利润尚未稳定为正');
+
+    const lossDays = recent7.filter(h => h.totalNetProfit < 0).length;
+    const trendStable = recent7.length >= 3 && lossDays <= 2;
+    if (!trendStable && recent7.length >= 3) reasons.push('近期收益波动偏大，建议先稳住现有摊位');
+
+    const avgPerCart = recent7.length > 0
+      ? Math.max(150, recent7.reduce((a, h) => a + h.totalNetProfit / Math.max(1, h.cartCount), 0) / recent7.length)
+      : 400;
+    const estPayback = Math.ceil(veh.price / Math.max(1, avgPerCart));
+    const paybackOk = estPayback <= ECON.maxPaybackDays;
+    if (!paybackOk) reasons.push(`预计回本约 ${estPayback} 天，超过30天稳健线`);
+
+    const fatigueOk = st.bossFatigue < 75 || st.staff.length >= st.carts.length;
+    if (!fatigueOk) reasons.push('老板疲劳偏高且人手不足，建议先招人或休整');
+
+    const worthBuying = affordable && hasSafety && profit7Pos && trendStable && paybackOk && fatigueOk;
+    return {
+      isFull: false, affordable, worthBuying, canBuy: affordable,
+      price: veh.price, safetyNeed: Math.ceil(safetyNeed), estPayback, reasons
+    };
+  }
+
+  // LV3 备料中心四条件与真实成本节省估算 (V2.6 P1 #8)
+  function getLv3Evaluation(s) {
+    const st = s || state;
+    const recent7 = st.prepCenter.utilHistory.slice(-7);
+    const avgUtil = recent7.length > 0 ? recent7.reduce((a, b) => a + b, 0) / recent7.length : 0;
+    const cond1 = recent7.length >= 7 && avgUtil >= ECON.lv3UtilThreshold;
+
+    const fixed30 = getDailyFixedCosts(st).total * 30;
+    const cond3 = (st.cash - ECON.lv3UpgradeCost) >= fixed30;
+
+    // 基于最近7天真实超负荷加班/缺货/备料溢出计算30日预计节省
+    const recentHist = st.history.slice(-7);
+    const avgDailyBottleneckCost = recentHist.length > 0
+      ? recentHist.reduce((a, h) => a + (h.overtimeCost || 0) + (h.shortageLoss || 0) * 0.45, 0) / recentHist.length
+      : 0;
+    const extraMaint30 = (ECON.lv3Maint - ECON.lv2Maint) * 30;
+    const predSave30 = Math.round(avgDailyBottleneckCost * 30 - extraMaint30);
+    const burden = ECON.lv3UpgradeCost + extraMaint30;
+    const cond2 = predSave30 >= burden * ECON.lv3SaveMultiplier;
+    const cond4 = avgUtil >= ECON.lv3UtilThreshold || recentHist.some(h => h.shortageLoss > 0 || h.overtimeCost > 0);
+
+    return {
+      avgUtil, predSave30, burden, fixed30,
+      cond1, cond2, cond3, cond4,
+      allMet: st.prepCenter.level === 2 && cond1 && cond2 && cond3 && cond4
+    };
+  }
+
+  /* ==================== 8. 订单生成、开摊前破产检测与日结核心 ==================== */
+  function generateTodayOrder(s) {
+    const st = s || state;
+    if (st.day < 3) return null;
+    const rng = mulberry32(st.eventSeed + st.day * 313);
+    // V2.6 P1 #7：提高批量订单出现频率（约75%）并拉大取舍差异
+    if (rng() > 0.75) return null;
+    const activeCarts = st.carts.filter(c => c.downDays <= 0);
+    if (activeCarts.length === 0) return null;
+    const pick = activeCarts[Math.floor(rng() * activeCarts.length)];
+    const types = [
+      { kind: '工厂团餐批量单', multQty: 0.40, priceMult: 1.02 },
+      { kind: '校园社团活动单', multQty: 0.52, priceMult: 1.14 },
+      { kind: '企事业加急包场单', multQty: 0.35, priceMult: 1.24 },
+      { kind: '高额违约挑战单', multQty: 0.65, priceMult: 1.28 }
+    ];
+    const t = types[Math.floor(rng() * types.length)];
+    const sameTypeCarts = activeCarts.filter(c => c.stallType === pick.stallType);
+    const totalCap = sameTypeCarts.reduce((a, c) => a + getEffectiveCartCap(c, st), 0);
+    const qty = Math.max(30, Math.round(totalCap * t.multQty));
+    const unitPrice = Math.round(STALL_TYPES[pick.stallType].defaultPrice * t.priceMult);
+    return {
+      id: `ord_${st.day}`,
+      kind: t.kind,
+      stallType: pick.stallType,
+      qty,
+      unitPrice,
+      amount: qty * unitPrice,
+      penalty: Math.round(qty * unitPrice * 0.28)
+    };
+  }
+
+  // V2.6 P0 #3：开摊前破产与无解判定
+  function checkPreOpenDeadlock(s) {
+    const st = s || state;
+    if (st.finished) return true;
+    const totalStock = ['bbq', 'snack', 'drink', 'cold'].reduce((a, k) => a + getStockTotal(k, st), 0);
+    const minUnitPrice = Math.min(...Object.keys(STALL_TYPES).filter(k => isStallUnlocked(k, st.day)).map(k => STALL_TYPES[k].unitCost));
+    const canBuyAny = st.cash >= minUnitPrice;
+    const anyDown = st.carts.some(c => c.downDays > 0);
+    if (totalStock === 0 && !canBuyAny && !anyDown && st.cash < 0) {
+      st.finished = true;
+      st.outcome = 'lose_bankrupt';
+      st.failReason = '开摊前现金已耗尽且库存归零，无法采购任何原料继续营业。';
+      saveGame();
+      return true;
+    }
+    return false;
+  }
+
+  // 核心日结：单一原料扣款（现金已在采购时扣除；账面净利按FIFO批次进价核算COGS与损耗，不重复扣现金！）
+  function simulateDayOperation(s, applyChanges, skipOperating) {
+    const st = s || state;
+    // V2.6 P2 #14：每日仅执行一次守卫
+    if (applyChanges && st.lastSettledDay === st.day) {
+      return st.history[st.history.length - 1];
+    }
+
+    const weather = st.weatherSeries[st.day - 1] || { temp: 22, cat: '常温', icon: '☀️', cityHeat: 1.0 };
+    const evt = st.eventSeries[st.day - 1] || CITY_EVENTS[0];
+    const rng = mulberry32(st.weatherSeed + st.day * 997);
+
+    // 1. 显式库存预分配（彻底杜绝同类车超卖 V2.6 P0 #1）
+    const { alloc } = allocateInventoryToCarts(st);
+    const activeCarts = skipOperating ? [] : st.carts.filter(c => c.downDays <= 0 && (alloc[c.id] || 0) > 0);
+    const nCarts = st.carts.length;
+
+    let totalPrep = 0;
+    let totalPrepHoursNeeded = 0;
+    activeCarts.forEach(c => {
+      const aQty = alloc[c.id] || 0;
+      totalPrep += aQty;
+      totalPrepHoursNeeded += (aQty / 100) * STALL_TYPES[c.stallType].prepHoursPer100;
+    });
+
+    const centerEfficiency = st.prepCenter.level === 3 ? 0.22 : (st.prepCenter.level === 2 ? ECON.sixCartCenterBonus : 0);
+    totalPrepHoursNeeded *= (1 - centerEfficiency);
+
+    const activeCap = st.prepCenter.level === 3 ? 2400 : (st.prepCenter.level === 2 ? ECON.lv2Cap : 520);
+    // V2.6 P1 #8：修复 LV2 利用率统计（按当前等级有效上限）
+    const utilRate = totalPrep / Math.max(1, (st.prepCenter.level === 2 ? ECON.lv2Cap : activeCap));
+
+    // 超负荷外包/加班费（与 LV2 基准对比，用于 LV3 真实节省核算）
+    const lv2BaselineOvertime = totalPrep > ECON.lv2Cap ? Math.round((totalPrep - ECON.lv2Cap) * 1.45) : 0;
+    let overtimeCost = totalPrep > activeCap ? Math.round((totalPrep - activeCap) * 1.45) : 0;
+
+    // 员工工时优先分配
+    const staffPrepHoursAvail = st.staff.reduce((a, e) => a + e.hours * e.prepEff, 0);
+    const staffUsedPrep = Math.min(totalPrepHoursNeeded, staffPrepHoursAvail);
+    let bossPrepHours = Math.max(0, totalPrepHoursNeeded - staffUsedPrep);
+
+    let bossRestLimited = false;
+    let forcedRestCost = 0;
+    if (st.bossFatigue >= 100 && !skipOperating) {
+      // V2.6 P1 #8：疲劳100触发强制休息事件
+      bossRestLimited = true;
+      forcedRestCost = 180;
+      bossPrepHours = 0;
+    } else if (st.bossFatigue >= 80 && bossPrepHours > 1.5) {
+      bossRestLimited = true;
+      overtimeCost += Math.round((bossPrepHours - 1.5) * 45);
+      bossPrepHours = 1.5;
+    }
+
+    // 2. 订单容量校验（严格基于已分配总库存，不超卖）
+    let orderFulfilled = false;
+    let orderPenalty = 0;
+    const orderShares = {};
+    if (st.todayOrder && st.orderAccepted) {
+      if (skipOperating) {
+        orderPenalty = st.todayOrder.penalty;
+      } else {
+        const matching = activeCarts.filter(c => c.stallType === st.todayOrder.stallType);
+        const totalAllocForOrder = matching.reduce((a, c) => a + (alloc[c.id] || 0), 0);
+        if (totalAllocForOrder >= st.todayOrder.qty) {
+          orderFulfilled = true;
+          let rem = st.todayOrder.qty;
+          matching.forEach(c => {
+            const cAlloc = alloc[c.id] || 0;
+            const share = Math.min(cAlloc, Math.ceil(st.todayOrder.qty * (cAlloc / Math.max(1, totalAllocForOrder))));
+            const actual = Math.min(rem, share);
+            orderShares[c.id] = actual;
+            rem -= actual;
+          });
+        } else {
+          orderPenalty = st.todayOrder.penalty;
+        }
+      }
+    }
+
+    // 同点竞争统计（只计算一次）
+    const locMap = {};
+    activeCarts.forEach(c => {
+      if (!locMap[c.location]) locMap[c.location] = [];
+      locMap[c.location].push(c);
+    });
+
+    // 多车人手协同因子：超过2辆车若人手不足（无全能店长且员工<车数-2），会有轻微管理折损
+    const hasManager = st.staff.some(e => e.role === 'all');
+    const coordFactor = (activeCarts.length > 2 && !hasManager && st.staff.length < activeCarts.length - 2)
+      ? Math.max(0.84, 1 - (activeCarts.length - 2 - st.staff.length) * 0.05)
+      : 1.0;
+
+    const fatInfo = getFatigueTierInfo(st.bossFatigue);
+    const staffSellBonus = 1 + Math.min(0.24, (st.staff.reduce((a, e) => a + e.sellEff, 0) / Math.max(1, activeCarts.length)) * 0.10);
+
+    let totalDirectRev = 0;
+    let totalOrderRev = 0;
+    let totalDirectCashCost = 0; // 摊位费+车维（今日现付）
+    let totalCogsCost = 0;       // 已售原料FIFO进价（账面成本，现金已于采购时支付）
+    let totalSpoilageCost = 0;   // 未售损耗FIFO进价（账面成本，现金已于采购时支付）
+    let shortageLoss = 0;
+    const cartResults = [];
+
+    // 模拟或真实扣减库存：为了保证 applyChanges=false 时不改原库存，用拷贝或顺序消费
+    const simInvBackup = !applyChanges ? JSON.parse(JSON.stringify(st.inventory)) : null;
+
+    st.carts.forEach(c => {
+      const aQty = skipOperating ? 0 : (alloc[c.id] || 0);
+      if (skipOperating || c.downDays > 0 || aQty <= 0) {
+        const locFee = (!skipOperating && c.downDays <= 0) ? LOCATIONS[c.location].dailyFee : 0;
+        const vMaint = VEHICLE_TYPES[c.vehicleType].maint;
+        totalDirectCashCost += (locFee + vMaint);
+        cartResults.push({
+          cartId: c.id, name: c.name, stallType: c.stallType, location: c.location,
+          down: c.downDays > 0 || skipOperating, noStock: !skipOperating && c.downDays <= 0 && aQty <= 0,
+          price: c.price, prep: 0, demand: 0, sold: 0, orderSold: 0,
+          directRev: 0, orderRev: 0, cogs: 0, spoilage: 0, directCashCost: locFee + vMaint,
+          sharedCost: 0, fixedCost: 0, contribProfit: -(locFee + vMaint), netProfit: 0
+        });
+        return;
+      }
+
+      const loc = LOCATIONS[c.location];
+      const stall = STALL_TYPES[c.stallType];
+      const fit = getStallLocationFit(c.stallType, c.location, weather.temp);
+      const tempMod = getTempModifier(c.stallType, weather.temp);
+      const evtMod = (evt.scope === 'all' || evt.scope === c.location) ? evt.mult : 1.0;
+
+      const peers = (locMap[c.location] || []).filter(p => p.id !== c.id);
+      let compPenalty = 0;
+      peers.forEach(p => { compPenalty += (p.stallType === c.stallType) ? ECON.sameCompRate : ECON.crossCompRate; });
+      const compFactor = Math.max(0.55, 1 - compPenalty);
+
+      const priceFactor = calcPriceFactor(c.price, c.location, c.stallType);
+      const regBonus = (st.day >= 18) ? (1 + Math.min(0.28, c.regulars * 0.007)) : (1 + Math.min(0.10, c.regulars * 0.003));
+      const noise = 0.94 + rng() * 0.12;
+
+      const rawDemand = loc.baseTraffic * stall.baseDemand * fit * tempMod * weather.cityHeat * evtMod * compFactor * priceFactor * regBonus * staffSellBonus * coordFactor * fatInfo.factor * noise;
+      const demand = Math.max(4, Math.round(rawDemand));
+
+      const orderQty = orderShares[c.id] || 0;
+      const availForWalkin = Math.max(0, aQty - orderQty);
+      const walkinSold = Math.min(availForWalkin, demand);
+
+      if (demand > availForWalkin) {
+        shortageLoss += Math.round((demand - availForWalkin) * Math.max(1, c.price - stall.unitCost));
+      }
+
+      const unsold = Math.max(0, availForWalkin - walkinSold);
+      const spoilQty = Math.round(unsold * 0.30);
+
+      // 按 FIFO 扣减实际消耗与损耗的批次进价（单一扣款，无额外+0.6重复扣费）
+      const soldFifo = consumeStockFIFO(c.stallType, walkinSold + orderQty, st, true);
+      const spoilFifo = consumeStockFIFO(c.stallType, spoilQty, st, true);
+
+      const directRev = walkinSold * c.price;
+      const orderRev = orderFulfilled ? orderQty * st.todayOrder.unitPrice : 0;
+      const directCashCost = loc.dailyFee + VEHICLE_TYPES[c.vehicleType].maint;
+
+      totalDirectRev += directRev;
+      totalOrderRev += orderRev;
+      totalDirectCashCost += directCashCost;
+      totalCogsCost += soldFifo.cost;
+      totalSpoilageCost += spoilFifo.cost;
+
+      const contribProfit = (directRev + orderRev) - soldFifo.cost - spoilFifo.cost - directCashCost;
+      cartResults.push({
+        cartId: c.id, name: c.name, stallType: c.stallType, location: c.location,
+        down: false, noStock: false, price: c.price, prep: aQty, demand,
+        sold: walkinSold, orderSold: orderQty,
+        directRev, orderRev, cogs: soldFifo.cost, spoilage: spoilFifo.cost, directCashCost,
+        sharedCost: 0, fixedCost: 0, contribProfit, netProfit: 0
+      });
+    });
+
+    // 清理过期批次并计入公共报废损耗
+    let expiredCost = 0;
+    ['bbq', 'snack', 'drink', 'cold'].forEach(stId => {
+      const kept = [];
+      (st.inventory[stId] || []).forEach(b => {
+        if ((st.day - b.buyDay) >= b.shelfLife) {
+          expiredCost += Math.round(b.qty * b.unitCost);
+        } else if (b.qty > 0) {
+          kept.push(b);
+        }
+      });
+      st.inventory[stId] = kept;
+    });
+
+    if (!applyChanges && simInvBackup) {
+      st.inventory = simInvBackup;
+    }
+
+    // 3. 共享成本、固定成本与公共费用严格对账 (V2.6 P2 #10)
+    const fixedInfo = getDailyFixedCosts(st);
+    const totalRev = totalDirectRev + totalOrderRev;
+    const totalSharedWages = fixedInfo.wages;
+    const totalCenterMaint = fixedInfo.centerMaint;
+    const totalMgmt = fixedInfo.mgmt;
+    const totalSixth = fixedInfo.sixth;
+    const publicCashPenalty = orderPenalty + overtimeCost + forcedRestCost;
+
+    const totalPrepSum = Math.max(1, cartResults.reduce((a, r) => a + r.prep, 0));
+    let allocSharedSum = 0;
+    let allocFixedSum = 0;
+
+    cartResults.forEach(r => {
+      const prepRatio = totalPrep > 0 ? (r.prep / totalPrepSum) : (1 / Math.max(1, nCarts));
+      r.sharedCost = Math.round((totalSharedWages + totalCenterMaint) * prepRatio);
+      r.fixedCost = Math.round((totalMgmt + totalSixth) / Math.max(1, nCarts));
+      r.netProfit = r.contribProfit - r.sharedCost - r.fixedCost;
+      allocSharedSum += r.sharedCost;
+      allocFixedSum += r.fixedCost;
+    });
+
+    const exactSharedFixed = totalSharedWages + totalCenterMaint + totalMgmt + totalSixth;
+    const roundingDiff = exactSharedFixed - (allocSharedSum + allocFixedSum);
+    // 公共费用明细：加班费 + 订单违约 + 过劳医疗 + 过期报废 + 分摊尾差
+    const publicExpenseTotal = publicCashPenalty + expiredCost + roundingDiff;
+    const unallocatedPublicNet = -publicExpenseTotal;
+
+    // 账面总成本（含已售FIFO进价+损耗+过期+全部现金固定与公共费用）
+    const totalCost = totalCogsCost + totalSpoilageCost + expiredCost + totalDirectCashCost + exactSharedFixed + publicCashPenalty;
+    const totalNetProfit = totalRev - totalCost;
+    const sumCartNet = cartResults.reduce((a, r) => a + r.netProfit, 0);
+    const reconDiff = Math.abs((sumCartNet + unallocatedPublicNet) - totalNetProfit);
+
+    // 现金净变动（原料已在采购时付过现金，日结只收营收并付今日现金开支！零重复扣款！）
+    const cashDeltaAtSettle = totalRev - totalDirectCashCost - exactSharedFixed - publicCashPenalty;
+
+    const report = {
+      day: st.day,
+      skipped: !!skipOperating,
+      weather, event: evt, cartCount: nCarts,
+      totalPrep, utilRate: Number(utilRate.toFixed(3)),
+      totalRev, totalDirectRev, totalOrderRev,
+      totalCost, totalCogsCost, totalSpoilageCost, expiredCost, totalDirectCashCost,
+      wages: totalSharedWages, centerMaint: totalCenterMaint,
+      mgmtFee: totalMgmt, sixthFee: totalSixth,
+      overtimeCost, orderPenalty, forcedRestCost, orderFulfilled, shortageLoss,
+      publicExpenseTotal, unallocatedPublicNet, sumCartNet,
+      totalNetProfit, cashDeltaAtSettle, reconDiff,
+      bossPrepHours: Number(bossPrepHours.toFixed(1)),
+      staffUsedPrep: Number(staffUsedPrep.toFixed(1)),
+      bossRestLimited,
+      cartResults
+    };
+
+    if (applyChanges) {
+      st.cash = Math.round(st.cash + cashDeltaAtSettle);
+      st.lastSettledDay = st.day;
+
+      if (skipOperating || forcedRestCost > 0) {
+        st.bossFatigue = Math.max(0, st.bossFatigue - (forcedRestCost > 0 ? 45 : 30));
+      } else {
+        const fatigueGain = Math.round(bossPrepHours * 4.2 + Math.max(0, activeCarts.length - st.staff.length) * 5 - 12);
+        st.bossFatigue = Math.max(0, Math.min(100, st.bossFatigue + fatigueGain));
+      }
+
+      // 更新每车累计净利、冷却、熟客（与高价挂钩 V2.6 P1 #7）及昨日设置记录
+      st.carts.forEach(c => {
+        const cr = cartResults.find(x => x.cartId === c.id);
+        c.lastReport = cr;
+        c.prevPrice = c.price;
+        c.prevPrepQty = c.prepQty;
+        if (cr) c.cumNetProfit += cr.netProfit;
+        if (c.moveCooldown > 0) c.moveCooldown--;
+        if (c.transformCooldown > 0) c.transformCooldown--;
+        if (c.downDays > 0) c.downDays--;
+
+        if (cr && !cr.down && !cr.noStock && cr.sold > 15) {
+          const ratio = c.price / LOCATIONS[c.location].psychPrice;
+          if (ratio > 1.35) {
+            c.regulars = Math.max(0, c.regulars - 3); // 长期高价流失熟客
+          } else if (ratio <= 1.25) {
+            c.regulars = Math.min(45, c.regulars + (st.day >= 18 ? 2 : 1));
+          }
+          const key = `${c.location}_${c.stallType}`;
+          if (!st.locSamples[key]) st.locSamples[key] = { days: 0, totalNet: 0 };
+          st.locSamples[key].days++;
+          st.locSamples[key].totalNet += cr.netProfit;
+        }
+      });
+
+      if (st.prepCenter.level >= 2) {
+        st.prepCenter.utilHistory.push(utilRate);
+      }
+      // V2.6 P1 #8：LV3 实际节省按真实避免的外包/加班费 + 节省工时代工费计算，不写死常量
+      if (st.prepCenter.level === 3) {
+        const avoidedOvertime = Math.max(0, lv2BaselineOvertime - overtimeCost);
+        const savedLabor = Math.round(totalPrep * 0.14);
+        const realDailySaved = avoidedOvertime + savedLabor;
+        st.prepCenter.lv3ActualSaved += realDailySaved;
+        st.prepCenter.lv3MaintPaid += (ECON.lv3Maint - ECON.lv2Maint);
+        const netSaved = st.prepCenter.lv3ActualSaved - st.prepCenter.lv3MaintPaid;
+        if (!st.prepCenter.lv3PaybackDay && netSaved >= ECON.lv3UpgradeCost) {
+          st.prepCenter.lv3PaybackDay = st.day;
+        }
+        st.lv3Log.push({ day: st.day, avoidedOvertime, savedLabor, netSaved });
+      }
+
+      st.history.push(report);
+      st.profitAuditLog.push({ day: st.day, totalNetProfit, sumCartNet, unallocatedPublicNet, reconDiff });
+      st.dayPhase = 'settle';
+
+      // 破产检测
+      const stockLeft = ['bbq', 'snack', 'drink', 'cold'].reduce((a, k) => a + getStockTotal(k, st), 0);
+      if (st.cash < -600 && stockLeft < 10) {
+        st.finished = true;
+        st.outcome = 'lose_bankrupt';
+        st.failReason = '现金流断裂且库存不足，无法继续支付必要经营开支。';
+      }
+      saveGame();
+    }
+    return report;
+  }
+
+  /* ==================== 9. 实时出摊营业 Canvas 动画（切后台自动停帧） ==================== */
+  function startLiveSelling() {
+    if (ui.selling || ui.settleLock) return;
+    if (state.lastSettledDay === state.day) {
+      ui.step = 'settle'; render(); return;
+    }
+    if (checkPreOpenDeadlock(state)) { showEndingModal(); return; }
+
+    const { alloc } = allocateInventoryToCarts(state);
+    const totalReady = state.carts.filter(c => c.downDays <= 0).reduce((a, c) => a + (alloc[c.id] || 0), 0);
+    if (totalReady <= 0) {
+      showToast('当前没有可出摊备料，可先采购或点“今天不出摊直接结算”。', true, 2400);
+      SFX.warn();
+      return;
+    }
+    SFX.bell();
+    ui.selling = true;
+    ui.paused = false;
+    ui.sellProgress = 0;
+    ui.liveSoldCount = 0;
+    ui.liveRevSoFar = 0;
+    ui.liveCustomers = [];
+    ui.liveFloaters = [];
+    ui.liveDaySim = simulateDayOperation(state, false, false);
+    state.dayPhase = 'sell';
+    render();
+    runCanvasLoop();
+  }
+
+  function finishLiveSelling(skipOperating) {
+    if (ui.settleLock) return;
+    ui.settleLock = true;
+    try {
+      if (ui.liveAnimId) { cancelAnimationFrame(ui.liveAnimId); ui.liveAnimId = null; }
+      ui.selling = false;
+      ui.paused = false;
+      const report = simulateDayOperation(state, true, !!skipOperating);
+      ui.step = 'settle';
+      ui.tab = 'operate';
+      SFX.coin();
+      const sign = report.totalNetProfit >= 0 ? '+' : '';
+      showToast(skipOperating
+        ? `第${report.day}天休业结算完毕，净利 ${sign}¥${report.totalNetProfit.toLocaleString()}`
+        : `第${report.day}天收摊！净利 ${sign}¥${report.totalNetProfit.toLocaleString()}`, false, 1300);
+      checkPostDayReminders(report);
+      render();
+      if (state.finished) showEndingModal();
+    } finally {
+      ui.settleLock = false;
+    }
+  }
+
+  function runCanvasLoop() {
+    if (ui.liveAnimId) cancelAnimationFrame(ui.liveAnimId);
+    if (document.hidden) return; // V2.6 P2 #16：后台不跑动画
+    let lastTs = performance.now();
+    const totalDuration = 7200;
+
+    function frame(ts) {
+      if (!ui.selling || document.hidden) { ui.liveAnimId = null; return; }
+      const dt = Math.min(60, ts - lastTs);
+      lastTs = ts;
+      const canvas = document.getElementById('sellCanvas');
+
+      if (!ui.paused) {
+        ui.sellProgress = Math.min(1, ui.sellProgress + (dt * ui.sellSpeed) / totalDuration);
+        const sim = ui.liveDaySim;
+        const targetSold = sim.cartResults.reduce((a, r) => a + r.sold + r.orderSold, 0);
+        const newSold = Math.floor(targetSold * ui.sellProgress);
+        if (newSold > ui.liveSoldCount) {
+          const diff = newSold - ui.liveSoldCount;
+          ui.liveSoldCount = newSold;
+          ui.liveRevSoFar = Math.round(sim.totalRev * ui.sellProgress);
+          if (Math.random() < 0.45) {
+            ui.liveFloaters.push({ x: 80 + Math.random() * 180, y: 118, txt: `+¥${Math.max(12, Math.round((sim.totalRev / Math.max(1, targetSold)) * diff))}`, life: 1.0 });
+          }
+          if (ui.liveCustomers.length < 9) {
+            ui.liveCustomers.push({
+              x: Math.random() < 0.5 ? -14 : 380,
+              tx: 60 + Math.random() * 230,
+              y: 138 + Math.random() * 26,
+              col: ['#5a9681', '#d6a133', '#b84336', '#4a3525', '#7b6147'][Math.floor(Math.random() * 5)],
+              wait: 0.7 + Math.random() * 0.8
+            });
+          }
+        }
+        ui.liveCustomers.forEach(p => {
+          if (Math.abs(p.x - p.tx) > 3) p.x += (p.tx - p.x) * 0.06 * ui.sellSpeed;
+          else p.wait -= (dt / 1000) * ui.sellSpeed;
+        });
+        ui.liveCustomers = ui.liveCustomers.filter(p => p.wait > 0);
+        ui.liveFloaters.forEach(f => { f.y -= 0.7 * ui.sellSpeed; f.life -= 0.024 * ui.sellSpeed; });
+        ui.liveFloaters = ui.liveFloaters.filter(f => f.life > 0);
+
+        const hudT = document.getElementById('hudTime');
+        const hudR = document.getElementById('hudRev');
+        if (hudT) {
+          const hr = Math.floor(11 + ui.sellProgress * 11);
+          hudT.textContent = `${hr}:00 · 已售 ${ui.liveSoldCount} 份`;
+        }
+        if (hudR) hudR.textContent = `营收 ¥${ui.liveRevSoFar.toLocaleString()}`;
+
+        if (ui.sellProgress >= 1) {
+          finishLiveSelling(false);
+          return;
+        }
+      }
+
+      if (canvas) drawStreetScene(canvas);
+      ui.liveAnimId = requestAnimationFrame(frame);
+    }
+    ui.liveAnimId = requestAnimationFrame(frame);
+  }
+
+  function drawStreetScene(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (canvas.width !== Math.round(rect.width * dpr) || canvas.height !== Math.round(rect.height * dpr)) {
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+    }
+    const ctx = canvas.getContext('2d');
+    const w = rect.width, h = rect.height;
+    ctx.save();
+    ctx.scale(dpr, dpr);
+
+    const p = ui.sellProgress;
+    const grad = ctx.createLinearGradient(0, 0, 0, h * 0.65);
+    grad.addColorStop(0, p < 0.6 ? '#e8d9b8' : '#c9885b');
+    grad.addColorStop(1, p < 0.6 ? '#f7ecd4' : '#e6b87d');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.fillStyle = '#c9b38f';
+    for (let i = 0; i < 6; i++) {
+      const bx = i * (w / 5.5);
+      const bh = 36 + (i % 3) * 14;
+      ctx.fillRect(bx, h * 0.56 - bh, w / 5.2, bh);
+    }
+
+    ctx.fillStyle = '#b9a585';
+    ctx.fillRect(0, h * 0.56, w, h * 0.44);
+    ctx.strokeStyle = '#9e8a6b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, h * 0.56); ctx.lineTo(w, h * 0.56); ctx.stroke();
+
+    const active = state.carts.filter(c => c.downDays <= 0).slice(0, 3);
+    const spacing = w / (active.length + 1);
+    active.forEach((c, i) => {
+      const cx = spacing * (i + 1), cy = h * 0.60;
+      ctx.fillStyle = c.stallType === 'bbq' ? '#b84336' : (c.stallType === 'snack' ? '#d6a133' : (c.stallType === 'drink' ? '#5a9681' : '#4b8696'));
+      ctx.strokeStyle = '#4a3525'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - 32, cy - 26); ctx.lineTo(cx + 32, cy - 26);
+      ctx.lineTo(cx + 26, cy - 40); ctx.lineTo(cx - 26, cy - 40);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#faf5ea';
+      ctx.fillRect(cx - 26, cy - 26, 52, 26); ctx.strokeRect(cx - 26, cy - 26, 52, 26);
+      ctx.fillStyle = '#4a3525'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(STALL_TYPES[c.stallType].name.slice(0, 2), cx, cy - 10);
+      ctx.fillStyle = '#4a3525';
+      ctx.beginPath(); ctx.arc(cx - 16, cy + 4, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx + 16, cy + 4, 6, 0, Math.PI * 2); ctx.fill();
+    });
+
+    ui.liveCustomers.forEach(cust => {
+      const x = (cust.x / 360) * w, y = (cust.y / 200) * h;
+      ctx.fillStyle = cust.col;
+      ctx.beginPath(); ctx.roundRect(x - 6, y - 10, 12, 16, 4); ctx.fill();
+      ctx.fillStyle = '#f7d5b0';
+      ctx.beginPath(); ctx.arc(x, y - 15, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#4a3525'; ctx.lineWidth = 1.4; ctx.stroke();
+    });
+
+    ui.liveFloaters.forEach(f => {
+      const x = (f.x / 360) * w, y = (f.y / 200) * h;
+      ctx.globalAlpha = Math.max(0, f.life);
+      ctx.fillStyle = '#7e2219'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(f.txt, x, y);
+      ctx.globalAlpha = 1;
+    });
+
+    if (ui.paused) {
+      ctx.fillStyle = 'rgba(74,53,37,0.55)'; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = '#fce8b2'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('歇一会中 · 点击顶栏继续营业', w / 2, h / 2);
+    }
+    ctx.restore();
+  }
+
+  /* ==================== 10. 提醒、推进下一天与预测 ==================== */
+  function checkPostDayReminders(report) {
+    if (report.forcedRestCost > 0) {
+      showToast('老板过劳达到100，已强制休整一天（医疗休养 ¥180）！', true, 2600);
+    } else {
+      const tier = state.bossFatigue >= 80 ? 'high' : (state.bossFatigue >= 60 ? 'mid' : 'low');
+      const fKey = `${state.day}_${tier}`;
+      if (tier === 'high' && state.reminderState.lastFatigueTierDay !== fKey) {
+        state.reminderState.lastFatigueTierDay = fKey;
+        showToast('老板高度疲劳（≥80，出餐-22%），建议招人或歇一会！', true, 2300);
+      }
+    }
+    const adv = getExpansionAdvice(state);
+    if (adv.worthBuying && (state.day - state.reminderState.lastExpandAdviceDay) >= ECON.adviceHysteresisDays) {
+      state.reminderState.lastExpandAdviceDay = state.day;
+      showToast('经营稳健，已满足添置新摊车条件！', false, 2000);
+    }
+  }
+
+  function advanceToNextDay() {
+    if (state.finished) { showEndingModal(); return; }
+    if (state.day >= TOTAL_DAYS) {
+      state.finished = true;
+      state.outcome = state.treatmentFund >= state.targetFund ? 'win' : 'lose_time';
+      if (state.outcome === 'lose_time') {
+        state.failReason = `第90天结束，治疗账户实转 ¥${state.treatmentFund.toLocaleString()}，距目标 ¥${state.targetFund.toLocaleString()} 还差 ¥${(state.targetFund - state.treatmentFund).toLocaleString()}。`;
+      }
+      saveGame(); showEndingModal(); return;
+    }
+
+    state.day++;
+    state.dayPhase = 'prep';
+    state.todayOrder = generateTodayOrder(state);
+    state.orderAccepted = false;
+    ui.step = 'prep';
+    ui.tab = 'operate';
+
+    if (state.day === 11 && !state.reminderState.unlockedDay11) {
+      state.reminderState.unlockedDay11 = true;
+      state.unlockLog.push({ day: 11, unlocked: ['snack', 'drink', 'cold', 'transform'] });
+      openModal('🎉 第11天 · 新摊型与转型开放！',
+        `<p>今天起正式开放新品类与摊位改装：</p>
+         <ul style="padding-left:18px;margin:6px 0;">
+           <li><strong>小吃摊</strong>：工厂区需求极旺（适配1.42）</li>
+           <li><strong>饮品摊</strong>：大学城与地铁口表现突出</li>
+           <li><strong>冷饮摊</strong>：暖天与高温天利润亮眼</li>
+           <li><strong>摊位转型</strong>：车队页可将旧车改装为新品类</li>
+         </ul>`,
+        [{ text: '知道了，继续干', cls: 'btn-primary', onClick: closeModal }]);
+    }
+
+    saveGame();
+    if (checkPreOpenDeadlock(state)) { showEndingModal(); return; }
+    render();
+  }
+
+  // V2.6 P2 #11：严格截取近14天历史窗口，精确修正 remainDays，显示到精确元
+  function computeForecast(s) {
+    const st = s || state;
+    if (st.day < 14) return { unlocked: false };
+    const recent = st.history.slice(-14);
+    const n = recent.length;
+    const nets = recent.map(h => h.totalNetProfit);
+    const mean = n > 0 ? nets.reduce((a, b) => a + b, 0) / n : 0;
+    const variance = n > 1 ? nets.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / n : 0;
+    const std = Math.sqrt(variance);
+    const fluct = Math.abs(mean) > 1 ? std / Math.abs(mean) : 1;
+    const lowConfidence = st.history.length < 10 || n < 7 || fluct > 0.6;
+
+    // 当天已日结则不重复计入当天！
+    const remainDays = Math.max(0, st.dayPhase === 'settle' ? (TOTAL_DAYS - st.day) : (TOTAL_DAYS - st.day + 1));
+    const sorted = [...nets].sort((a, b) => a - b);
+    const pickPct = (p) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.floor(sorted.length * p)))] || mean;
+
+    const baseNow = st.treatmentFund + Math.max(0, st.cash - getDailyFixedCosts(st).total * 5);
+    return {
+      unlocked: true,
+      sampleCount: n,
+      lowConfidence,
+      remainDays,
+      conservative: Math.round(baseNow + pickPct(0.15) * remainDays),
+      typical: Math.round(baseNow + pickPct(0.50) * remainDays),
+      optimistic: Math.round(baseNow + pickPct(0.85) * remainDays)
+    };
+  }
+
+  /* ==================== 11. 提示与弹窗组件 ==================== */
+  function showToast(msg, important, duration) {
+    const wrap = document.getElementById('toastContainer');
+    const div = document.createElement('div');
+    div.className = 'toast' + (important ? ' important' : '');
+    div.textContent = msg;
+    wrap.appendChild(div);
+    setTimeout(() => { if (div.parentNode) div.parentNode.removeChild(div); }, duration || 1800);
+  }
+
+  function openModal(title, bodyHtml, actions) {
+    const mask = document.getElementById('modalMask');
+    const box = document.getElementById('modalBox');
+    box.innerHTML = `<h3 class="modal-title">${title}</h3><div>${bodyHtml}</div><div class="modal-actions" id="modalActions"></div>`;
+    const actWrap = document.getElementById('modalActions');
+    (actions || []).forEach(a => {
+      const btn = document.createElement('button');
+      btn.className = 'btn ' + (a.cls || '');
+      btn.textContent = a.text;
+      btn.addEventListener('click', () => { SFX.click(); if (a.onClick) a.onClick(); });
+      actWrap.appendChild(btn);
+    });
+    mask.classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalMask').classList.remove('open');
+  }
+
+  function showEndingModal() {
+    const win = state.outcome === 'win';
+    const totalNet = state.history.reduce((a, h) => a + h.totalNetProfit, 0);
+    openModal(
+      win ? '🏆 筹款成功 · 圆满通关！' : '📉 90天创业结算',
+      `<div class="stat-box" style="margin-bottom:8px;">
+         <div class="stat-label">最终结果</div>
+         <div class="stat-val ${win ? 'pos' : 'neg'}">${win ? '已成功筹齐母亲治疗费用！' : (state.failReason || '未能在90天内完成目标')}</div>
+       </div>
+       <div class="row-line"><span>治疗账户实际到账</span><strong>¥${state.treatmentFund.toLocaleString()} / ¥${state.targetFund.toLocaleString()}</strong></div>
+       <div class="row-line"><span>最终手头现金</span><span>¥${state.cash.toLocaleString()}</span></div>
+       <div class="row-line"><span>车队规模 / 员工</span><span>${state.carts.length} 辆车 / ${state.staff.length} 人</span></div>
+       <div class="row-line"><span>累计账面净利润</span><span>¥${totalNet.toLocaleString()}</span></div>`,
+      [
+        { text: '查看账本', cls: '', onClick: () => { closeModal(); ui.tab = 'ledger'; render(); } },
+        { text: '返回标题页', cls: 'btn-primary', onClick: () => { closeModal(); showStartScreen(); } }
+      ]
+    );
+  }
+
+  /* ==================== 12. 界面渲染引擎 ==================== */
+  function setTitleChromeVisible(isTitle) {
+    ui.inTitle = isTitle;
+    ['topbar', 'stepBar', 'bottomNav'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden-on-title', isTitle);
+    });
+  }
+
+  function render() {
+    if (!state || ui.inTitle) return;
+    const weather = state.weatherSeries[state.day - 1] || { temp: 22, cat: '常温', icon: '☀️', cityHeat: 1.0 };
+    const fatInfo = getFatigueTierInfo(state.bossFatigue);
+
+    document.getElementById('tbDay').textContent = `第${state.day}/${TOTAL_DAYS}天`;
+    document.getElementById('tbCash').textContent = `现金 ¥${state.cash.toLocaleString()}`;
+    document.getElementById('btnRest').textContent = ui.selling ? (ui.paused ? '继续营业' : '歇一会') : '歇一会';
+
+    document.getElementById('metaWeather').textContent = `${weather.icon} ${weather.temp}°C`;
+    document.getElementById('metaFatigue').textContent = `${fatInfo.label} ${state.bossFatigue}`;
+
+    ['prep', 'sell', 'settle'].forEach((k, i) => {
+      const el = document.getElementById(`stepBtn${i + 1}`);
+      el.classList.remove('active', 'done');
+      if (ui.tab === 'operate' && ui.step === k) el.classList.add('active');
+      else if ((state.dayPhase === 'sell' && k === 'prep') || (state.dayPhase === 'settle' && k !== 'settle')) el.classList.add('done');
+    });
+
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === ui.tab);
+    });
+
+    const main = document.getElementById('mainScroll');
+    if (ui.tab === 'operate') main.innerHTML = renderOperateTab(weather);
+    else if (ui.tab === 'fleet') main.innerHTML = renderFleetTab();
+    else if (ui.tab === 'center') main.innerHTML = renderCenterTab();
+    else if (ui.tab === 'ledger') main.innerHTML = renderLedgerTab();
+    else if (ui.tab === 'fund') main.innerHTML = renderFundTab();
+
+    bindDynamicEvents();
+    if (ui.tab === 'operate' && ui.step === 'sell' && ui.selling) {
+      const c = document.getElementById('sellCanvas');
+      if (c) drawStreetScene(c);
+    }
+  }
+
+  function renderMedProgressBar() {
+    const pct = Math.min(100, (state.treatmentFund / state.targetFund) * 100);
+    return `<div class="med-bar-wrap">
+      <div class="med-row">
+        <span>🏥 母亲治疗账户（仅实转计入通关）</span>
+        <strong>¥${state.treatmentFund.toLocaleString()} / ¥${state.targetFund.toLocaleString()} (${pct.toFixed(1)}%)</strong>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }
+
+  function renderOperateTab(weather) {
+    const evt = state.eventSeries[state.day - 1] || CITY_EVENTS[0];
+    const nextW = state.day < TOTAL_DAYS ? state.weatherSeries[state.day] : null;
+    const nextE = state.day < TOTAL_DAYS ? state.eventSeries[state.day] : null;
+    const fatInfo = getFatigueTierInfo(state.bossFatigue);
+    const stageName = state.day <= 10 ? '起步期' : (state.day <= 20 ? '解锁期' : (state.day <= 40 ? '成长期' : (state.day <= 65 ? '扩张期' : '冲刺期')));
+
+    let html = renderMedProgressBar();
+
+    // 当日情报 + 明日天气与事件提前预告 (V2.6 P1 #7)
+    html += `<div class="card">
+      <div class="card-head">
+        <span class="card-title">${weather.icon} 今日街市 · ${stageName}</span>
+        <span class="tag ${weather.temp >= 30 ? 'tag-red' : 'tag-mint'}">${weather.cat} ${weather.temp}°C · 热度 ${Math.round(weather.cityHeat * 100)}%</span>
+      </div>
+      <div style="font-size:12.5px;"><strong>今日事件【${evt.name}】：</strong>${evt.desc}</div>
+      ${nextW ? `<div class="small-note" style="margin-top:5px;padding-top:5px;border-top:1px dotted var(--line);">
+        🔮 <strong>明日预告：</strong>${nextW.icon} ${nextW.cat} ${nextW.temp}°C · ${nextE ? nextE.name : '平日街市'}
+      </div>` : ''}
+      ${fatInfo.penalty > 0 ? `<div class="small-note warn-badge" style="margin-top:4px;">⚠ 老板状态：${fatInfo.label}（${fatInfo.desc}）</div>` : ''}
+    </div>`;
+
+    // 前3天定价引导 (V2.6 P1 #6)
+    if (state.day <= 3 && ui.step === 'prep') {
+      html += `<div class="advice-banner">
+        <span>💡 <strong>定价小贴士：</strong>低于心理价容易薄利卖光但不赚钱，过高会没人买；一般定在心理价的 <strong>1.1–1.25倍</strong> 利润更佳。</span>
+      </div>`;
+    }
+
+    if (ui.step === 'prep') html += renderStepPrep();
+    else if (ui.step === 'sell') html += renderStepSell();
+    else html += renderStepSettle();
+    return html;
+  }
+
+  function renderStepPrep() {
+    const disc = getBulkDiscount(state.carts.length);
+    const unlockedStalls = Object.keys(STALL_TYPES).filter(id => isStallUnlocked(id));
+    const { alloc, shortage, totalGapByStall } = allocateInventoryToCarts(state);
+
+    let leftCol = '';
+    let rightCol = '';
+
+    // 原料采购卡片（支持自定义数量与一键补齐缺口 V2.6 P0 #3）
+    leftCol += `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🥬 今日原料采购（买入锁定成本）</span>
+        ${disc > 0 ? `<span class="tag tag-mint">规模采购 ${Math.round((1 - disc) * 100)}折</span>` : `<span class="tag tag-gray">4车起享折扣</span>`}
+      </div>`;
+
+    unlockedStalls.forEach(stId => {
+      const st = STALL_TYPES[stId];
+      const stock = getStockTotal(stId);
+      const unitP = Number((st.unitCost * (1 - disc)).toFixed(2));
+      const planTotal = state.carts.filter(c => c.stallType === stId && c.downDays <= 0).reduce((a, c) => a + Math.min(c.prepQty, getEffectiveCartCap(c)), 0);
+      const gap = totalGapByStall[stId] || 0;
+      leftCol += `<div style="padding:6px 0;border-bottom:1px dotted var(--line);">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
+          <div>
+            <strong>${st.icon} ${st.name}原料</strong>
+            <div class="small-note">现价 ¥${unitP}/份 · 现有 ${stock}份 · 计划 ${planTotal}份${gap > 0 ? ` · <span class="warn-badge">缺 ${gap}份</span>` : ''}</div>
+          </div>
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+            ${gap > 0 ? `<button class="btn btn-sm btn-yellow" data-buy="${stId}" data-qty="${gap}">补齐${gap}</button>` : ''}
+            <button class="btn btn-sm" data-buy="${stId}" data-qty="50">+50</button>
+            <input type="number" min="1" max="2000" value="20" class="input-num" id="customQty_${stId}" style="width:56px;">
+            <button class="btn btn-sm btn-mint" data-buy-custom="${stId}">买</button>
+          </div>
+        </div>
+      </div>`;
+    });
+    Object.keys(STALL_TYPES).filter(id => !isStallUnlocked(id)).forEach(stId => {
+      const stock = getStockTotal(stId);
+      if (stock > 0) leftCol += `<div class="row-line"><span class="small-note">${STALL_TYPES[stId].name}：${stock}份（历史库存/当前未开放）</span></div>`;
+    });
+    leftCol += `<div class="small-note" style="margin-top:6px;">原料只在采购时扣一次现金，日结不重复扣料；保质期2–3天。</div></div>`;
+
+    // 今日批量订单
+    if (state.todayOrder) {
+      const o = state.todayOrder;
+      const totalAllocForOrder = state.carts.filter(c => c.stallType === o.stallType && c.downDays <= 0).reduce((a, c) => a + (alloc[c.id] || 0), 0);
+      const canSupply = totalAllocForOrder >= o.qty;
+      leftCol += `<div class="card">
+        <div class="card-head">
+          <span class="card-title">📦 ${o.kind}</span>
+          <span class="tag tag-yellow">¥${o.amount.toLocaleString()}</span>
+        </div>
+        <div style="font-size:12.5px;margin-bottom:8px;">
+          需求 <strong>${STALL_TYPES[o.stallType].name} ${o.qty}份</strong>（单价 ¥${o.unitPrice}），违约赔付 ¥${o.penalty}。<br>
+          已分配该品类库存：<strong>${totalAllocForOrder}份</strong> — ${canSupply ? '<span class="ok-badge">库存充足可接单</span>' : '<span class="warn-badge">库存不足，需先补货</span>'}
+        </div>
+        <button class="btn btn-sm ${state.orderAccepted ? 'btn-mint' : ''}" id="btnToggleOrder" ${!canSupply && !state.orderAccepted ? 'disabled' : ''}>
+          ${state.orderAccepted ? '✓ 已承接（点击取消）' : '承接此订单'}
+        </button>
+      </div>`;
+    }
+
+    // 右栏：各车备料与定价（多车支持折叠卡片 + 一键沿用昨日/批量设置 V2.6 P3 #18）
+    rightCol += `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🔥 各车备料与手写价牌</span>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-sm" id="btnCopyPrev">沿用昨日</button>
+          <button class="btn btn-sm btn-yellow" id="btnBatchAuto">批量推荐</button>
+        </div>
+      </div>`;
+
+    const useAccordion = state.carts.length >= 3;
+    state.carts.forEach(c => {
+      const loc = LOCATIONS[c.location];
+      const cap = getEffectiveCartCap(c);
+      const maxP = getMaxPriceForLocation(c.location);
+      const got = alloc[c.id] || 0;
+      const gap = shortage[c.id] || 0;
+      const isOpen = !useAccordion || ui.expandedCartId === c.id;
+
+      if (c.downDays > 0) {
+        rightCol += `<div class="row-line"><span>${c.name}（改装停业中，剩余${c.downDays}天）</span><span class="tag tag-gray">停业</span></div>`;
+        return;
+      }
+
+      const controlsHtml = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="stepper">
+            <span class="small-note" style="min-width:auto;">计划备料</span>
+            <button data-prep-dec="${c.id}">-</button>
+            <span>${c.prepQty}</span>
+            <button data-prep-inc="${c.id}">+</button>
+          </div>
+          <div class="stepper">
+            <span class="small-note" style="min-width:auto;">售价¥</span>
+            <button data-price-dec="${c.id}">-</button>
+            <span>${c.price}</span>
+            <button data-price-inc="${c.id}">+</button>
+          </div>
+        </div>
+        <div class="small-note" style="margin-top:5px;">
+          已分配库存 <strong>${got}/${Math.min(c.prepQty, cap)}份</strong>（上限${cap}）· 心理价 ¥${loc.psychPrice}（最高 ¥${maxP}）
+          ${gap > 0 ? `<br><span class="warn-badge">⚠ 备料计划超出可分配库存 ${gap} 份，请补货或调低计划！</span>` : ''}
+          ${c.price >= maxP ? `<br><span class="warn-badge">已达该地点最高标价上限</span>` : ''}
+        </div>`;
+
+      if (useAccordion) {
+        rightCol += `<div class="cart-acc">
+          <div class="cart-acc-head" data-toggle-cart="${c.id}">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="illus-wrap">${SVG.cartIcon(c.stallType)}</span>
+              <div>
+                <strong>${c.name} · ${STALL_TYPES[c.stallType].name}</strong>
+                <div class="small-note">📍${loc.name} · 分配${got}份 · ¥${c.price} ${gap > 0 ? '<span class="warn-badge">缺料</span>' : ''}</div>
+              </div>
+            </div>
+            <span class="small-note">${isOpen ? '▲' : '▼'}</span>
+          </div>
+          ${isOpen ? `<div class="cart-acc-body">${controlsHtml}</div>` : ''}
+        </div>`;
+      } else {
+        rightCol += `<div style="padding:7px 0;border-bottom:1px dashed var(--line);">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+            <span class="illus-wrap">${SVG.cartIcon(c.stallType)}</span>
+            <div>
+              <strong>${c.name} · ${STALL_TYPES[c.stallType].name}</strong>
+              <div class="small-note">📍${loc.name}（心理价 ¥${loc.psychPrice}）· 熟客 ${c.regulars}</div>
+            </div>
+          </div>
+          ${controlsHtml}
+        </div>`;
+      }
+    });
+    rightCol += `</div>`;
+
+    const allDown = state.carts.every(c => c.downDays > 0);
+    const actionBtns = `
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${!allDown ? `<button class="btn btn-primary" style="flex:2;" id="btnGoSell">装车完毕，前往出摊 →</button>` : ''}
+        <button class="btn" style="flex:1;" id="btnSkipToday">${allDown ? '全车停业中，直接进入日结 →' : '今天不出摊（直接结算）'}</button>
+      </div>`;
+
+    return `<div class="desktop-cols"><div>${leftCol}</div><div>${rightCol}${actionBtns}</div></div>`;
+  }
+
+  function renderStepSell() {
+    const activeCount = state.carts.filter(c => c.downDays <= 0).length;
+    let html = `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🏮 街头出摊实况</span>
+        <span class="tag tag-mint">${activeCount} 辆车待命</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="sellCanvas"></canvas>
+        <div class="canvas-hud">
+          <span class="hud-chip" id="hudTime">${ui.selling ? '营业中...' : '准备就绪'}</span>
+          <span class="hud-chip" id="hudRev">营收 ¥${ui.liveRevSoFar.toLocaleString()}</span>
+        </div>
+      </div>`;
+
+    if (!ui.selling && state.dayPhase !== 'settle') {
+      html += `<div class="small-note" style="margin-bottom:8px;">营业中可随时点顶栏“歇一会”暂停；若全部停业或想休整，可直接跳过出摊。</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" id="btnBackPrep">← 调整备料</button>
+        <button class="btn btn-primary" style="flex:1;" id="btnStartSell">🔥 点火开摊！</button>
+        <button class="btn" id="btnSkipFromSell">今天不出摊</button>
+      </div>`;
+    } else if (ui.selling) {
+      html += `<div style="display:flex;gap:8px;">
+        <button class="btn btn-yellow" id="btnSpeedSell">${ui.sellSpeed === 1 ? '⚡ 2.5倍速' : '🐢 正常速'}</button>
+        <button class="btn btn-mint" style="flex:1;" id="btnFinishNow">快速收摊结算 →</button>
+      </div>`;
+    } else {
+      html += `<button class="btn btn-primary btn-block" id="btnGoSettle">查看今日账本 →</button>`;
+    }
+    html += `</div>`;
+    return html;
+  }
+
+  function renderStepSettle() {
+    const r = state.history[state.history.length - 1];
+    if (!r || r.day !== state.day) {
+      return `<div class="card"><div class="small-note">今日尚未收摊，请先完成出摊或选择休业结算。</div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-primary" style="flex:1;" id="btnGoSellFromEmpty">去出摊营业</button>
+        <button class="btn" id="btnSkipToday">今天不出摊</button>
+      </div></div>`;
+    }
+
+    const adv = getExpansionAdvice(state);
+    let topBanner = '';
+    if (adv.worthBuying) {
+      topBanner = `<div class="advice-banner">
+        <span>💡 经营稳健，满足添置新车条件！</span>
+        <button class="btn btn-sm btn-yellow" id="btnJumpFleet">去看看</button>
+      </div>`;
+    }
+
+    let leftCol = `${topBanner}<div class="card">
+      <div class="card-head">
+        <span class="card-title">📒 第${r.day}天 ${r.skipped ? '休业总账' : '收摊总账'}</span>
+        <span class="tag ${r.totalNetProfit >= 0 ? 'tag-mint' : 'tag-red'}">净利 ${r.totalNetProfit >= 0 ? '+' : ''}¥${r.totalNetProfit.toLocaleString()}</span>
+      </div>
+      <div class="grid-3" style="margin-bottom:8px;">
+        <div class="stat-box"><div class="stat-label">今日总收入</div><div class="stat-val">¥${r.totalRev.toLocaleString()}</div></div>
+        <div class="stat-box"><div class="stat-label">账面总成本</div><div class="stat-val">¥${r.totalCost.toLocaleString()}</div></div>
+        <div class="stat-box"><div class="stat-label">现金收支净额</div><div class="stat-val ${r.cashDeltaAtSettle >= 0 ? 'pos' : 'neg'}">${r.cashDeltaAtSettle >= 0 ? '+' : ''}¥${r.cashDeltaAtSettle.toLocaleString()}</div></div>
+      </div>
+      <div class="row-line"><span>已售原料成本（FIFO进价，采购已付现）</span><span>¥${r.totalCogsCost.toLocaleString()}</span></div>
+      <div class="row-line"><span>未售损耗 / 过期报废（账面成本）</span><span>¥${r.totalSpoilageCost} / ¥${r.expiredCost}</span></div>
+      <div class="row-line"><span>摊位费与车维（现付）</span><span>¥${r.totalDirectCashCost.toLocaleString()}</span></div>
+      <div class="row-line"><span>员工工资 / 备料中心维护</span><span>¥${r.wages} / ¥${r.centerMaint}</span></div>
+      <div class="row-line"><span>车队管理费（${r.cartCount}车）</span><span>¥${r.mgmtFee}</span></div>
+      ${r.sixthFee > 0 ? `<div class="row-line"><span>第六车额外保障费（单列）</span><span class="warn-badge">¥${r.sixthFee}</span></div>` : ''}
+      ${r.overtimeCost > 0 ? `<div class="row-line"><span>超负荷加班/应急代工费</span><span class="warn-badge">¥${r.overtimeCost}</span></div>` : ''}
+      ${r.orderPenalty > 0 ? `<div class="row-line"><span>订单违约赔付</span><span class="warn-badge">¥${r.orderPenalty}</span></div>` : ''}
+      ${r.forcedRestCost > 0 ? `<div class="row-line"><span>过劳100强制休养费</span><span class="warn-badge">¥${r.forcedRestCost}</span></div>` : ''}
+      <div class="row-line"><span>工时分工（员工 / 老板）</span><span>${r.staffUsedPrep}h / ${r.bossPrepHours}h</span></div>
+    </div>`;
+
+    // 右栏：每车独立分账 + 公共费用行严格对账 (V2.6 P1 #6 & P2 #10)
+    let rightCol = `<div class="card">
+      <div class="card-head"><span class="card-title">🛒 每车复盘（售价 vs 销量 vs 利润）</span><span class="small-note">严苛对账</span></div>`;
+    r.cartResults.forEach(cr => {
+      if (cr.down) {
+        rightCol += `<div class="row-line"><span>${cr.name}</span><span class="tag tag-gray">停业/休业（净利 ¥${cr.netProfit}）</span></div>`;
+        return;
+      }
+      const advice = [];
+      if (cr.noStock) advice.push('无库存未出摊');
+      else {
+        if (cr.sold < cr.prep * 0.65) advice.push('备料偏多或售价偏高');
+        if (cr.demand > cr.prep * 1.15) advice.push('供不应求，可加备料或小幅提价');
+        if (cr.price <= LOCATIONS[cr.location].psychPrice && cr.netProfit < 200) advice.push('薄利卖光，建议适当提价至1.15倍左右');
+      }
+      rightCol += `<div style="padding:6px 0;border-bottom:1px dotted var(--line);font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;">
+          <strong>${cr.name}（${STALL_TYPES[cr.stallType].name} · ${LOCATIONS[cr.location].name}）</strong>
+          <strong class="${cr.netProfit >= 0 ? 'ok-badge' : 'warn-badge'}">净利 ${cr.netProfit >= 0 ? '+' : ''}¥${cr.netProfit}</strong>
+        </div>
+        <div class="small-note">售价 ¥${cr.price} · 售出 ${cr.sold + cr.orderSold}/${cr.prep}份（需求${cr.demand}）· 贡献 ¥${cr.contribProfit} · 分摊 ¥${cr.sharedCost + cr.fixedCost}</div>
+        ${advice.length ? `<div class="small-note" style="color:var(--red-dark);">复盘：${advice.join('；')}</div>` : ''}
+      </div>`;
+    });
+
+    // 显式“公共费用”行，让各车净利之和 + 公共净利 === 总净利一目了然！
+    rightCol += `<div class="public-row">
+      <div class="row-line" style="padding:2px 0;border:none;">
+        <span><strong>公共费用 / 未分摊公共净利</strong>（加班、违约、过期与尾差）</span>
+        <strong class="${r.unallocatedPublicNet >= 0 ? 'ok-badge' : 'warn-badge'}">${r.unallocatedPublicNet >= 0 ? '+' : ''}¥${r.unallocatedPublicNet}</strong>
+      </div>
+      <div class="small-note">✓ 对账校验：各车合计 ¥${r.sumCartNet} + 公共净利 ¥${r.unallocatedPublicNet} = 总净利 ¥${r.totalNetProfit}（误差 ¥${r.reconDiff.toFixed(2)}）</div>
+    </div></div>`;
+
+    rightCol += `<div style="display:flex;gap:8px;">
+      <button class="btn btn-mint" id="btnQuickFund">转入治疗账户</button>
+      <button class="btn btn-primary" style="flex:1;" id="btnNextDay">${state.day >= TOTAL_DAYS ? '完成第90天总结算' : `进入第${state.day + 1}天 →`}</button>
+    </div>`;
+
+    return `<div class="desktop-cols"><div>${leftCol}</div><div>${rightCol}</div></div>`;
+  }
+
+  function renderFleetTab() {
+    const adv = getExpansionAdvice(state);
+    const fixed = getDailyFixedCosts(state);
+    const maxCarts = state.singleChallenge ? 1 : 6;
+    const activeOperatingCount = state.carts.filter(c => c.downDays <= 0).length;
+
+    let leftCol = `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🛒 我的车队（${state.carts.length}/${maxCarts}车）</span>
+        <span class="tag tag-yellow">管理费 ¥${fixed.mgmt}${fixed.sixth ? ` + 第6车保障 ¥${fixed.sixth}` : ''}</span>
+      </div>`;
+
+    state.carts.forEach(c => {
+      const veh = VEHICLE_TYPES[c.vehicleType];
+      const loc = LOCATIONS[c.location];
+      const effCap = getEffectiveCartCap(c);
+      leftCol += `<div style="padding:8px 0;border-bottom:1px dashed var(--line);">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="illus-wrap">${SVG.cartIcon(c.stallType)}</span>
+          <div>
+            <strong>${c.name} · ${veh.name}</strong>（有效载量 ${effCap}份）
+            <div class="small-note">${STALL_TYPES[c.stallType].name} · 📍${loc.name} · 熟客 ${c.regulars} · 累计净利 ¥${c.cumNetProfit.toLocaleString()}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+          <button class="btn btn-sm" data-move-cart="${c.id}" ${c.moveCooldown > 0 || c.downDays > 0 ? 'disabled' : ''}>
+            ${c.moveCooldown > 0 ? `搬点冷却(${c.moveCooldown}天)` : `搬点(¥${ECON.moveFee})`}
+          </button>
+          <button class="btn btn-sm" data-transform-cart="${c.id}" ${!isStallUnlocked('snack') || c.transformCooldown > 0 || c.downDays > 0 ? 'disabled' : ''}>
+            ${!isStallUnlocked('snack') ? '第11天开放转型' : (c.transformCooldown > 0 ? `转型冷却(${c.transformCooldown}天)` : `转型(¥${ECON.transformCost})`)}
+          </button>
+        </div>
+      </div>`;
+    });
+
+    // V2.6 P3 #19：满6辆车显示“车队已满”而非“买不起”
+    leftCol += `<div style="margin-top:10px;padding-top:8px;border-top:1.5px solid var(--line);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <strong>添置新摊车</strong>
+        <div>
+          ${adv.isFull
+            ? `<span class="tag tag-mint">✓ 车队已满</span>`
+            : `<span class="tag ${adv.affordable ? 'tag-mint' : 'tag-gray'}">${adv.affordable ? '✓ 买得起' : '✗ 买不起'}</span>
+               <span class="tag ${adv.worthBuying ? 'tag-mint' : 'tag-yellow'}">${adv.worthBuying ? '✓ 值得买' : '⚠ 暂不建议'}</span>`}
+        </div>
+      </div>
+      ${adv.reasons.length ? `<div class="small-note" style="margin-bottom:6px;">评估说明：${adv.reasons.join('；')}</div>` : `<div class="small-note ok-badge" style="margin-bottom:6px;">预计回本约 ${adv.estPayback} 天，已保留14天固定成本安全垫！</div>`}
+      <div class="grid-3">
+        ${Object.values(VEHICLE_TYPES).map(v => `
+          <button class="btn btn-sm" data-buy-veh="${v.id}" ${adv.isFull || state.cash < v.price ? 'disabled' : ''}>
+            ${v.name}<br>¥${v.price.toLocaleString()}
+          </button>`).join('')}
+      </div>
+    </div></div>`;
+
+    let rightCol = `<div class="card">
+      <div class="card-head">
+        <span class="card-title">👥 雇佣员工（${state.staff.length}人）</span>
+        <span class="small-note">日薪合计 ¥${fixed.wages}</span>
+      </div>`;
+    if (state.staff.length === 0) {
+      rightCol += `<div class="small-note" style="margin-bottom:8px;">尚未雇佣员工。雇佣员工可提升每车有效载量、分担备料疲劳并减少多车管理折损。</div>`;
+    } else {
+      state.staff.forEach((e, idx) => {
+        rightCol += `<div class="row-line">
+          <span><strong>${e.name}</strong>（¥${e.wage}/日 · 增载+${e.capBonus || 45}）</span>
+          <button class="btn btn-sm" data-fire-staff="${idx}">解雇</button>
+        </div>`;
+      });
+    }
+    rightCol += `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);">`;
+    STAFF_POOL.forEach((tpl, idx) => {
+      rightCol += `<div class="row-line">
+        <div><strong>${tpl.name}</strong>（¥${tpl.wage}/日）<div class="small-note">${tpl.desc}</div></div>
+        <button class="btn btn-sm btn-mint" data-hire-staff="${idx}">招聘</button>
+      </div>`;
+    });
+    rightCol += `</div></div>`;
+
+    return `<div class="desktop-cols"><div>${leftCol}</div><div>${rightCol}</div></div>`;
+  }
+
+  function renderCenterTab() {
+    const pc = state.prepCenter;
+    const lv3 = getLv3Evaluation(state);
+    const { alloc } = allocateInventoryToCarts(state);
+    const todayPlanned = state.carts.reduce((a, c) => a + (alloc[c.id] || 0), 0);
+    const capNow = pc.level === 1 ? 520 : (pc.level === 2 ? ECON.lv2Cap : 2400);
+    const avg7Util = pc.utilHistory.length > 0 ? Math.round(lv3.avgUtil * 100) : Math.round((todayPlanned / capNow) * 100);
+
+    let html = `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🏭 中央备料中心</span>
+        <span class="tag tag-mint">当前等级：${pc.level === 1 ? '基础储物' : (pc.level === 2 ? 'LV2 中央备料' : 'LV3 高效备料')}</span>
+      </div>
+      <div class="grid-3" style="margin-bottom:8px;">
+        <div class="stat-box"><div class="stat-label">有效备料上限</div><div class="stat-val">${capNow} 份</div></div>
+        <div class="stat-box"><div class="stat-label">今日预计负荷</div><div class="stat-val">${Math.round((todayPlanned / capNow) * 100)}%</div></div>
+        <div class="stat-box"><div class="stat-label">近7日平均利用率</div><div class="stat-val">${avg7Util}%</div></div>
+      </div>`;
+
+    if (pc.level === 1) {
+      html += `<p style="font-size:12.5px;margin:6px 0;">建设 <strong>LV2 中央备料中心</strong> 可将有效备料上限提升至 ${ECON.lv2Cap} 份，集中加工带来约 10.5% 工时效率增益（维护费 ¥${ECON.lv2Maint}/日），显著避免多车超负荷加班费。</p>
+      <button class="btn btn-primary btn-block" id="btnBuildLv2" ${state.cash < ECON.lv2BuildCost ? 'disabled' : ''}>建设 LV2 备料中心（¥${ECON.lv2BuildCost.toLocaleString()}）</button>`;
+    } else if (pc.level === 2) {
+      html += `<div style="font-size:12.5px;margin-bottom:8px;">
+        <strong>LV3 高效备料升级评估</strong>（成本 ¥${ECON.lv3UpgradeCost.toLocaleString()}，维护 ¥${ECON.lv3Maint}/日，须同时满足4项条件）：
+        <div class="row-line"><span>1. 近7营业日利用率 ≥ 75%（当前 ${Math.round(lv3.avgUtil * 100)}%）</span><span class="${lv3.cond1 ? 'ok-badge' : 'warn-badge'}">${lv3.cond1 ? '✓ 满足' : '✗ 未达标'}</span></div>
+        <div class="row-line"><span>2. 预计30天省下的钱 ≥ 总负担（¥${lv3.predSave30.toLocaleString()} / ¥${lv3.burden.toLocaleString()}）</span><span class="${lv3.cond2 ? 'ok-badge' : 'warn-badge'}">${lv3.cond2 ? '✓ 满足' : '✗ 未达标'}</span></div>
+        <div class="row-line"><span>3. 升级后现金覆盖30天固定成本（需 ¥${lv3.fixed30.toLocaleString()}）</span><span class="${lv3.cond3 ? 'ok-badge' : 'warn-badge'}">${lv3.cond3 ? '✓ 满足' : '✗ 未达标'}</span></div>
+        <div class="row-line"><span>4. 存在真实产能瓶颈（缺货或加班）</span><span class="${lv3.cond4 ? 'ok-badge' : 'warn-badge'}">${lv3.cond4 ? '✓ 满足' : '✗ 未达标'}</span></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="btnUpgradeLv3" ${!lv3.allMet ? 'disabled' : ''}>
+        ${lv3.allMet ? `升级 LV3 高效备料中心（¥${ECON.lv3UpgradeCost.toLocaleString()}）` : '暂不满足全部4项升级条件'}
+      </button>`;
+    } else {
+      const actualNet = pc.lv3ActualSaved - pc.lv3MaintPaid;
+      html += `<div class="stat-box" style="margin-bottom:8px;">
+        <div class="stat-label">升级后实际省钱情况（按真实避免加班与工时成本核算）</div>
+        <div class="stat-val ${actualNet > 0 ? 'pos' : 'neg'}">${actualNet > 0 ? `累计净省 ¥${actualNet.toLocaleString()}` : '暂时不值得升级（实际节省 ≤ 0）'}</div>
+      </div>
+      <div class="row-line"><span>升级日期 / 回本日期</span><span>第${pc.lv3UpgradeDay}天 / ${pc.lv3PaybackDay ? `第${pc.lv3PaybackDay}天` : '回本中'}</span></div>
+      <div class="row-line"><span>预计30天省下的钱</span><span>¥${pc.lv3PredSave30.toLocaleString()}</span></div>
+      <div class="row-line"><span>累计真实节省 / 新增维护费</span><span>¥${pc.lv3ActualSaved.toLocaleString()} / ¥${pc.lv3MaintPaid.toLocaleString()}</span></div>`;
+    }
+    html += `</div>`;
+    return html;
+  }
+
+  function renderLedgerTab() {
+    const fc = computeForecast(state);
+    let leftCol = `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🔮 经营前景估算</span>
+        <span class="tag tag-gray">${state.day < 14 ? '第14天起开启' : `近${fc.sampleCount}天 · 剩${fc.remainDays}天`}</span>
+      </div>`;
+
+    if (!fc.unlocked) {
+      leftCol += `<div class="small-note">积累更多日常账目后，第14天起将为你估算90天终局资金范围。</div>`;
+    } else {
+      if (fc.lowConfidence) {
+        leftCol += `<div class="advice-banner">最近经营数据还不够多，或者收入起伏较大。再经营几天，估算会更可靠。</div>`;
+      }
+      // V2.6 P2 #11：精确显示到元，避免保留1位小数导致三档一样
+      leftCol += `<div class="grid-3" style="margin-bottom:6px;">
+        <div class="stat-box"><div class="stat-label">保守估计</div><div class="stat-val">¥${fc.conservative.toLocaleString()}</div></div>
+        <div class="stat-box"><div class="stat-label">通常估计</div><div class="stat-val">¥${fc.typical.toLocaleString()}</div></div>
+        <div class="stat-box"><div class="stat-label">乐观估计</div><div class="stat-val">¥${fc.optimistic.toLocaleString()}</div></div>
+      </div>
+      <div class="small-note">以上预计范围严格基于近 ${fc.sampleCount} 天实际净利与剩余 ${fc.remainDays} 个营业日估算，受天气与客流波动影响，并非保证收入。</div>`;
+    }
+    leftCol += `</div>`;
+
+    let rightCol = `<div class="card">
+      <div class="card-head">
+        <span class="card-title">📒 近期经营总账（最近10天）</span>
+        <span class="small-note">全部已核验对账</span>
+      </div>`;
+    if (state.history.length === 0) {
+      rightCol += `<div class="small-note">暂无收摊记录，完成第一天营业后将在此记账。</div>`;
+    } else {
+      state.history.slice(-10).reverse().forEach(h => {
+        rightCol += `<div class="row-line">
+          <div>
+            <strong>第${h.day}天</strong>（${h.weather.icon}${h.weather.temp}°C · ${h.cartCount}车）
+            <div class="small-note">收入 ¥${h.totalRev.toLocaleString()} · 成本 ¥${h.totalCost.toLocaleString()} · 公共净利 ¥${h.unallocatedPublicNet}</div>
+          </div>
+          <strong class="${h.totalNetProfit >= 0 ? 'ok-badge' : 'warn-badge'}">${h.totalNetProfit >= 0 ? '+' : ''}¥${h.totalNetProfit.toLocaleString()}</strong>
+        </div>`;
+      });
+    }
+    rightCol += `</div>`;
+    return `<div class="desktop-cols"><div>${leftCol}</div><div>${rightCol}</div></div>`;
+  }
+
+  function renderFundTab() {
+    const fixed = getDailyFixedCosts(state);
+    const safeKeep = fixed.total * 7 + 1500;
+    const availSafe = Math.max(0, state.cash - safeKeep);
+    const remain = Math.max(0, state.targetFund - state.treatmentFund);
+
+    let html = renderMedProgressBar();
+    html += `<div class="card">
+      <div class="card-head">
+        <span class="card-title">🏥 向母亲治疗账户转账</span>
+        <span class="tag tag-red">通关唯一凭证</span>
+      </div>
+      <p style="font-size:12.5px;margin:0 0 8px;">
+        只有<strong>实际转入治疗账户</strong>的金额计入通关目标。转出后不可撤回，请务必预留日常进货与固定开支（建议至少保留 ¥${safeKeep.toLocaleString()}）。
+      </p>
+      <div class="row-line"><span>当前手头现金</span><strong>¥${state.cash.toLocaleString()}</strong></div>
+      <div class="row-line"><span>距离目标还差</span><strong class="warn-badge">¥${remain.toLocaleString()}</strong></div>
+      <div class="row-line"><span>建议可安全转出</span><strong class="ok-badge">¥${availSafe.toLocaleString()}</strong></div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-mint" data-transfer="1000" ${state.cash < 1000 ? 'disabled' : ''}>转 ¥1,000</button>
+        <button class="btn btn-sm btn-mint" data-transfer="5000" ${state.cash < 5000 ? 'disabled' : ''}>转 ¥5,000</button>
+        <button class="btn btn-sm btn-yellow" data-transfer="20000" ${state.cash < 20000 ? 'disabled' : ''}>转 ¥20,000</button>
+        <button class="btn btn-sm btn-primary" data-transfer="${availSafe}" ${availSafe < 500 ? 'disabled' : ''}>安全全转 (¥${availSafe.toLocaleString()})</button>
+      </div>
+    </div>`;
+    return html;
+  }
+
+  /* ==================== 13. 动态事件绑定 ==================== */
+  function buyMaterial(stId, qty) {
+    qty = Math.floor(Number(qty));
+    if (!Number.isFinite(qty) || qty <= 0) { showToast('请输入有效的采购数量', true); return; }
+    const disc = getBulkDiscount(state.carts.length);
+    const lockedUnitCost = Number((STALL_TYPES[stId].unitCost * (1 - disc)).toFixed(2));
+    const cost = Math.round(qty * lockedUnitCost);
+    if (state.cash < cost) { showToast(`现金不足，采购 ${qty} 份需 ¥${cost.toLocaleString()}`, true); SFX.warn(); return; }
+    state.cash -= cost;
+    state.inventory[stId].push({ qty, unitCost: lockedUnitCost, buyDay: state.day, shelfLife: STALL_TYPES[stId].shelfLife });
+    SFX.coin(); saveGame(); render();
+  }
+
+  function bindDynamicEvents() {
+    document.querySelectorAll('[data-buy]').forEach(btn => {
+      btn.addEventListener('click', () => buyMaterial(btn.dataset.buy, btn.dataset.qty));
+    });
+    document.querySelectorAll('[data-buy-custom]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const stId = btn.dataset.buyCustom;
+        const inp = document.getElementById(`customQty_${stId}`);
+        buyMaterial(stId, inp ? inp.value : 0);
+      });
+    });
+
+    // 折叠卡片切换
+    document.querySelectorAll('[data-toggle-cart]').forEach(el => {
+      el.addEventListener('click', () => {
+        const cid = el.dataset.toggleCart;
+        ui.expandedCartId = (ui.expandedCartId === cid) ? '' : cid;
+        SFX.click(); render();
+      });
+    });
+
+    // 一键沿用昨日设置 / 批量推荐 (V2.6 P3 #18)
+    const btnCopyPrev = document.getElementById('btnCopyPrev');
+    if (btnCopyPrev) btnCopyPrev.addEventListener('click', () => {
+      state.carts.forEach(c => {
+        if (c.prevPrepQty) c.prepQty = Math.min(getEffectiveCartCap(c), c.prevPrepQty);
+        if (c.prevPrice) c.price = Math.min(getMaxPriceForLocation(c.location), c.prevPrice);
+      });
+      SFX.click(); saveGame(); render();
+      showToast('已一键沿用昨日各车备料与定价');
+    });
+
+    const btnBatchAuto = document.getElementById('btnBatchAuto');
+    if (btnBatchAuto) btnBatchAuto.addEventListener('click', () => {
+      state.carts.forEach(c => {
+        if (c.downDays > 0) return;
+        const loc = LOCATIONS[c.location];
+        c.price = Math.min(getMaxPriceForLocation(c.location), Math.round(loc.psychPrice * 1.18));
+        c.prepQty = Math.min(getEffectiveCartCap(c), Math.round(loc.baseTraffic * 0.85));
+      });
+      SFX.click(); saveGame(); render();
+      showToast('已按各地点推荐区间批量设置备料与定价');
+    });
+
+    // 备料与调价
+    document.querySelectorAll('[data-prep-dec]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = state.carts.find(x => x.id === btn.dataset.prepDec);
+        if (c) { c.prepQty = Math.max(0, c.prepQty - 10); SFX.click(); saveGame(); render(); }
+      });
+    });
+    document.querySelectorAll('[data-prep-inc]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = state.carts.find(x => x.id === btn.dataset.prepInc);
+        if (c) { c.prepQty = Math.min(getEffectiveCartCap(c), c.prepQty + 10); SFX.click(); saveGame(); render(); }
+      });
+    });
+    document.querySelectorAll('[data-price-dec]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = state.carts.find(x => x.id === btn.dataset.priceDec);
+        if (c) { c.price = Math.max(8, c.price - 1); SFX.click(); saveGame(); render(); }
+      });
+    });
+    document.querySelectorAll('[data-price-inc]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = state.carts.find(x => x.id === btn.dataset.priceInc);
+        if (c) {
+          const maxP = getMaxPriceForLocation(c.location);
+          if (c.price >= maxP) { showToast(`已达${LOCATIONS[c.location].name}最高标价上限（¥${maxP}）`, false, 1500); return; }
+          c.price = Math.min(maxP, c.price + 1); SFX.click(); saveGame(); render();
+        }
+      });
+    });
+
+    const btnOrd = document.getElementById('btnToggleOrder');
+    if (btnOrd) btnOrd.addEventListener('click', () => { state.orderAccepted = !state.orderAccepted; SFX.click(); saveGame(); render(); });
+
+    const btnGoSell = document.getElementById('btnGoSell');
+    if (btnGoSell) btnGoSell.addEventListener('click', () => { ui.step = 'sell'; SFX.click(); render(); });
+    const btnBackPrep = document.getElementById('btnBackPrep');
+    if (btnBackPrep) btnBackPrep.addEventListener('click', () => { ui.step = 'prep'; SFX.click(); render(); });
+    const btnStartSell = document.getElementById('btnStartSell');
+    if (btnStartSell) btnStartSell.addEventListener('click', startLiveSelling);
+    const btnSpeed = document.getElementById('btnSpeedSell');
+    if (btnSpeed) btnSpeed.addEventListener('click', () => { ui.sellSpeed = ui.sellSpeed === 1 ? 2.5 : 1; SFX.click(); render(); });
+    const btnFinishNow = document.getElementById('btnFinishNow');
+    if (btnFinishNow) btnFinishNow.addEventListener('click', () => finishLiveSelling(false));
+    const btnGoSettle = document.getElementById('btnGoSettle');
+    if (btnGoSettle) btnGoSettle.addEventListener('click', () => { ui.step = 'settle'; SFX.click(); render(); });
+    const btnGoSellEmpty = document.getElementById('btnGoSellFromEmpty');
+    if (btnGoSellEmpty) btnGoSellEmpty.addEventListener('click', () => { ui.step = 'sell'; SFX.click(); render(); });
+    const btnNextDay = document.getElementById('btnNextDay');
+    if (btnNextDay) btnNextDay.addEventListener('click', () => { SFX.click(); advanceToNextDay(); });
+    const btnQuickFund = document.getElementById('btnQuickFund');
+    if (btnQuickFund) btnQuickFund.addEventListener('click', () => { ui.tab = 'fund'; SFX.click(); render(); });
+    const btnJumpFleet = document.getElementById('btnJumpFleet');
+    if (btnJumpFleet) btnJumpFleet.addEventListener('click', () => { ui.tab = 'fleet'; SFX.click(); render(); });
+
+    // 今天不出摊，直接结算兜底按钮 (V2.6 P0 #3)
+    ['btnSkipToday', 'btnSkipFromSell'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', () => {
+        openModal('🛑 今天不出摊，直接结算？',
+          '<p style="font-size:13px;">今天不出摊将不产生营收，但仍需支付固定管理费与员工日薪，同时老板疲劳降低 30 点。确定直接结算吗？</p>',
+          [
+            { text: '再想想', onClick: closeModal },
+            { text: '确认休业结算', cls: 'btn-primary', onClick: () => { closeModal(); finishLiveSelling(true); } }
+          ]);
+      });
+    });
+
+    // 搬点弹窗（显示当前地点且默认“请选择”防止误点 V2.6 P3 #20）
+    document.querySelectorAll('[data-move-cart]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = state.carts.find(x => x.id === btn.dataset.moveCart);
+        if (!c) return;
+        const curLoc = LOCATIONS[c.location];
+        const opts = `<option value="">-- 请选择新地点 --</option>` + Object.values(LOCATIONS).filter(l => l.id !== c.location).map(l =>
+          `<option value="${l.id}">${l.name}（心理价 ¥${l.psychPrice} · 日摊费 ¥${l.dailyFee} · 客流基数${l.baseTraffic}）</option>`).join('');
+        openModal(`📍 ${c.name} 搬迁地点`,
+          `<p style="font-size:12.5px;">当前地点：<strong>${curLoc.name}</strong>（熟客 ${c.regulars}）<br>搬迁费用 <strong>¥${ECON.moveFee}</strong>，搬迁后冷却 <strong>${ECON.moveCooldown}天</strong> 并损失约一半熟客。</p>
+           <select class="retro-select" id="selMoveLoc" style="width:100%;">${opts}</select>`,
+          [
+            { text: '取消', onClick: closeModal },
+            { text: `确认搬点 (-¥${ECON.moveFee})`, cls: 'btn-primary', onClick: () => {
+              const nl = document.getElementById('selMoveLoc').value;
+              if (!nl) { showToast('请先选择目标新地点', true); return; }
+              if (state.cash < ECON.moveFee) { showToast('现金不足支付搬迁费', true); return; }
+              state.cash -= ECON.moveFee;
+              c.location = nl;
+              c.price = Math.min(getMaxPriceForLocation(nl), Math.round(LOCATIONS[nl].psychPrice * 1.15));
+              c.moveCooldown = ECON.moveCooldown;
+              c.regulars = Math.floor(c.regulars * 0.5);
+              closeModal(); SFX.coin(); saveGame(); render();
+              showToast(`${c.name}已迁至${LOCATIONS[nl].name}`);
+            }}
+          ]);
+      });
+    });
+
+    // 转型弹窗（显示当前摊型 + 保底提示 V2.6 P0 #3 & P3 #20）
+    document.querySelectorAll('[data-transform-cart]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = state.carts.find(x => x.id === btn.dataset.transformCart);
+        if (!c) return;
+        const otherActive = state.carts.filter(x => x.id !== c.id && x.downDays <= 0).length;
+        const opts = `<option value="">-- 请选择目标摊型 --</option>` + Object.values(STALL_TYPES).filter(t => isStallUnlocked(t.id) && t.id !== c.stallType).map(t =>
+          `<option value="${t.id}">${t.icon} ${t.name}（基准成本 ¥${t.unitCost}）</option>`).join('');
+        openModal(`🔧 ${c.name} 摊位转型`,
+          `<p style="font-size:12.5px;">当前摊型：<strong>${STALL_TYPES[c.stallType].icon} ${STALL_TYPES[c.stallType].name}</strong><br>
+           改装费用：<strong>¥${ECON.transformCost}</strong> · 预计停业：<strong>${ECON.transformDownDays} 天</strong> · 冷却：<strong>${ECON.transformCooldown} 天</strong></p>
+           ${otherActive === 0 ? `<div class="warn-banner">注意：这是你当前唯一营业中的摊车，改装后今日将全队停业，可在经营页点“直接进入日结”推进下一天。</div>` : ''}
+           <select class="retro-select" id="selTransType" style="width:100%;">${opts}</select>`,
+          [
+            { text: '取消', onClick: closeModal },
+            { text: `确认改装 (-¥${ECON.transformCost})`, cls: 'btn-primary', onClick: () => {
+              const nt = document.getElementById('selTransType').value;
+              if (!nt) { showToast('请先选择目标摊型', true); return; }
+              if (state.cash < ECON.transformCost) { showToast('现金不足支付改装费', true); return; }
+              state.cash -= ECON.transformCost;
+              c.stallType = nt;
+              c.price = Math.min(getMaxPriceForLocation(c.location), STALL_TYPES[nt].defaultPrice);
+              c.downDays = ECON.transformDownDays;
+              c.transformCooldown = ECON.transformCooldown;
+              closeModal(); SFX.coin(); saveGame(); render();
+              showToast(`${c.name}开始改装为${STALL_TYPES[nt].name}，停业1天`);
+            }}
+          ]);
+      });
+    });
+
+    // 买车
+    document.querySelectorAll('[data-buy-veh]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const vId = btn.dataset.buyVeh;
+        const veh = VEHICLE_TYPES[vId];
+        const adv = getExpansionAdvice(state, vId);
+        if (adv.isFull) return;
+        const newIdx = state.carts.length + 1;
+        openModal(`🛒 确认购买 ${veh.name}`,
+          `<p style="font-size:12.5px;">价格：<strong>¥${veh.price.toLocaleString()}</strong>（基础载量 ${veh.cap}份，日维护 ¥${veh.maint}）</p>
+           ${newIdx === 6 ? `<p class="warn-badge" style="font-size:12.5px;">注意：第6辆车将额外产生每日 ¥${ECON.sixthCartGuarantee} 保障费（单独列示）。</p>` : ''}
+           <p style="font-size:12.5px;">评估：${adv.worthBuying ? '<span class="ok-badge">✓ 买得起且值得买</span>' : `<span class="warn-badge">⚠ 买得起但暂不建议（${adv.reasons.join('；')}）</span>`}</p>`,
+          [
+            { text: '再想想', onClick: closeModal },
+            { text: '确认购车', cls: 'btn-primary', onClick: () => {
+              if (state.cash < veh.price) { showToast('现金不足', true); return; }
+              state.cash -= veh.price;
+              const locs = Object.keys(LOCATIONS);
+              const nl = locs[(newIdx - 1) % locs.length];
+              state.carts.push({
+                id: `cart_${Date.now()}`, name: `${newIdx}号摊车`,
+                vehicleType: vId, stallType: 'bbq', location: nl,
+                price: Math.round(LOCATIONS[nl].psychPrice * 1.15),
+                prepQty: Math.min(140, veh.cap),
+                prevPrice: Math.round(LOCATIONS[nl].psychPrice * 1.15),
+                prevPrepQty: Math.min(140, veh.cap),
+                moveCooldown: 0, transformCooldown: 0, downDays: 0, regulars: 0, cumNetProfit: 0, lastReport: null
+              });
+              closeModal(); SFX.bell(); saveGame(); render();
+              showToast(`喜提${newIdx}号${veh.name}！`);
+            }}
+          ]);
+      });
+    });
+
+    // 招人 / 解雇
+    document.querySelectorAll('[data-hire-staff]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tpl = STAFF_POOL[Number(btn.dataset.hireStaff)];
+        state.staff.push({ id: `st_${Date.now()}`, ...tpl });
+        SFX.bell(); saveGame(); render();
+        showToast(`已招聘 ${tpl.name}（日薪 ¥${tpl.wage}）`);
+      });
+    });
+    document.querySelectorAll('[data-fire-staff]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const removed = state.staff.splice(Number(btn.dataset.fireStaff), 1)[0];
+        SFX.click(); saveGame(); render();
+        if (removed) showToast(`已解雇 ${removed.name}`);
+      });
+    });
+
+    // 备料中心建设与升级
+    const btnLv2 = document.getElementById('btnBuildLv2');
+    if (btnLv2) btnLv2.addEventListener('click', () => {
+      if (state.cash < ECON.lv2BuildCost) return;
+      openModal('🏭 建设 LV2 中央备料中心',
+        `<p style="font-size:12.5px;">费用 ¥${ECON.lv2BuildCost.toLocaleString()}，每日维护费 ¥${ECON.lv2Maint}，有效备料上限提升至 ${ECON.lv2Cap} 份。</p>`,
+        [
+          { text: '取消', onClick: closeModal },
+          { text: '确认建设', cls: 'btn-primary', onClick: () => {
+            if (state.cash < ECON.lv2BuildCost) return;
+            state.cash -= ECON.lv2BuildCost;
+            state.prepCenter.level = 2;
+            state.prepCenter.builtDay = state.day;
+            closeModal(); SFX.bell(); saveGame(); render();
+            showToast('LV2 中央备料中心已建成！');
+          }}
+        ]);
+    });
+
+    const btnLv3 = document.getElementById('btnUpgradeLv3');
+    if (btnLv3) btnLv3.addEventListener('click', () => {
+      const lv3 = getLv3Evaluation(state);
+      if (!lv3.allMet) return;
+      openModal('🏭 升级 LV3 高效备料中心',
+        `<p style="font-size:12.5px;">四项门槛已全部满足！升级费 ¥${ECON.lv3UpgradeCost.toLocaleString()}，每日维护 ¥${ECON.lv3Maint}，预计30天省下的钱约 ¥${lv3.predSave30.toLocaleString()}。</p>`,
+        [
+          { text: '取消', onClick: closeModal },
+          { text: '确认升级', cls: 'btn-primary', onClick: () => {
+            if (state.cash < ECON.lv3UpgradeCost) return;
+            state.cash -= ECON.lv3UpgradeCost;
+            state.prepCenter.level = 3;
+            state.prepCenter.lv3UpgradeDay = state.day;
+            state.prepCenter.lv3PredSave30 = lv3.predSave30;
+            closeModal(); SFX.bell(); saveGame(); render();
+            showToast('LV3 高效备料中心已投入使用！');
+          }}
+        ]);
+    });
+
+    // 治疗账户转账（V2.6 P2 #14：加防重入幂等锁，绝不会重复扣款变负）
+    document.querySelectorAll('[data-transfer]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const amt = Math.floor(Number(btn.dataset.transfer));
+        if (!Number.isFinite(amt) || amt <= 0 || state.cash < amt) { showToast('可转现金不足', true); return; }
+        openModal('🏥 确认转入治疗账户',
+          `<p style="font-size:13px;">确定将 <strong>¥${amt.toLocaleString()}</strong> 转入母亲治疗账户吗？转出后不可撤回。</p>`,
+          [
+            { text: '取消', onClick: closeModal },
+            { text: '确认转入', cls: 'btn-primary', onClick: () => {
+              if (ui.transferLock) return;
+              ui.transferLock = true;
+              try {
+                if (state.cash < amt) { showToast('现金不足，无法重复转账', true); closeModal(); return; }
+                state.cash -= amt;
+                state.treatmentFund += amt;
+                closeModal(); SFX.coin();
+                if (state.treatmentFund >= state.targetFund && !state.finished) {
+                  state.finished = true;
+                  state.outcome = 'win';
+                  saveGame(); render(); showEndingModal();
+                } else {
+                  saveGame(); render();
+                  showToast(`已成功转入 ¥${amt.toLocaleString()}！`);
+                }
+              } finally {
+                setTimeout(() => { ui.transferLock = false; }, 120);
+              }
+            }}
+          ]);
+      });
+    });
+  }
+
+  /* ==================== 14. 设置页面（对外隐藏开发快测 V2.6 P3 #22） ==================== */
+  function openSettingsModal() {
+    const html = `
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+        <div class="stat-box">
+          <strong>1. 玩法与难度</strong>
+          <div class="small-note" style="margin-top:4px;">当前难度：${DIFFICULTIES[state.difficulty].name}（目标 ¥${state.targetFund.toLocaleString()}）${state.singleChallenge ? ' · 单车精耕挑战' : ''} · ${DESIGN_VER}</div>
+        </div>
+        <div class="stat-box">
+          <strong>2. 显示设置（仅存本机）</strong>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
+            <label><input type="checkbox" id="setLargeFont" ${settings.largeFont ? 'checked' : ''}> 大字号</label>
+            <label><input type="checkbox" id="setPaperTex" ${settings.paperTex ? 'checked' : ''}> 牛皮纸纹</label>
+            <label><input type="checkbox" id="setIllus" ${settings.showIllus ? 'checked' : ''}> 复古插画</label>
+            <label><input type="checkbox" id="setReduce" ${settings.reduceMotion ? 'checked' : ''}> 减少动画</label>
+          </div>
+        </div>
+        <div class="stat-box">
+          <strong>3. 存档管理</strong>
+          <div class="small-note" style="margin:4px 0 6px;">存档版本 VERSION=${SAVE_VERSION} · 天气种子 ${state.weatherSeed}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-sm" id="btnExportLogs">复制账本摘要</button>
+            <button class="btn btn-sm btn-primary" id="btnClearSave">清空存档</button>
+          </div>
+        </div>
+        <div class="stat-box">
+          <strong>4. 玩法帮助</strong>
+          <div class="small-note" style="margin-top:4px;">
+            • 原料仅在采购时扣一次现金；多辆同类车按顺序分配库存，绝不超卖。<br>
+            • 售价建议定在地点心理价的 1.1–1.25 倍，过高会流失熟客与客流。<br>
+            • 老板疲劳按档扣减效率，达到 100 将强制休整一天。
+          </div>
+        </div>
+      </div>`;
+    openModal('⚙️ 设置与存档管理', html, [{ text: '关闭', cls: 'btn-primary', onClick: closeModal }]);
+
+    ['setLargeFont', 'setPaperTex', 'setIllus', 'setReduce'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => {
+        settings.largeFont = document.getElementById('setLargeFont').checked;
+        settings.paperTex = document.getElementById('setPaperTex').checked;
+        settings.showIllus = document.getElementById('setIllus').checked;
+        settings.reduceMotion = document.getElementById('setReduce').checked;
+        saveSettings();
+      });
+    });
+
+    document.getElementById('btnExportLogs').addEventListener('click', () => {
+      const summary = JSON.stringify({
+        ver: DESIGN_VER, saveVer: SAVE_VERSION, day: state.day, cash: state.cash, fund: state.treatmentFund,
+        auditCount: state.profitAuditLog.length, lv3Logs: state.lv3Log.length
+      });
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(summary);
+        else {
+          const ta = document.createElement('textarea'); ta.value = summary; document.body.appendChild(ta);
+          ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        showToast('已复制经营账本摘要');
+      } catch (e) { showToast('账本摘要已生成'); }
+    });
+
+    document.getElementById('btnClearSave').addEventListener('click', () => {
+      openModal('⚠️ 第一次确认：清空存档',
+        '<p style="font-size:13px;">确定要清空当前《地摊大亨90天》的所有进度吗？清空后将回到第1天并重新选择难度。</p>',
+        [
+          { text: '取消', onClick: openSettingsModal },
+          { text: '继续清空', cls: 'btn-primary', onClick: () => {
+            openModal('🚨 第二次确认：不可恢复！',
+              '<p style="font-size:13px;color:var(--danger);font-weight:700;">此操作不可恢复！所有现金、车队、治疗账户记录与账本都将永久清除。</p>',
+              [
+                { text: '我再想想', onClick: closeModal },
+                { text: '确认永久清空', cls: 'btn-primary', onClick: () => {
+                  StorageAdapter.remove(SAVE_KEY);
+                  if (!StorageAdapter.getRaw(SAVE_KEY)) {
+                    state = null;
+                    closeModal();
+                    showStartScreen();
+                    showToast('存档已彻底清除，请重新选择难度开局');
+                  }
+                }}
+              ]);
+          }}
+        ]);
+    });
+  }
+
+  /* ==================== 15. 开局页与全局导航绑定 ==================== */
+  function showStartScreen() {
+    if (ui.liveAnimId) { cancelAnimationFrame(ui.liveAnimId); ui.liveAnimId = null; }
+    ui.selling = false;
+    setTitleChromeVisible(true); // V2.6 P3 #21：标题页隐藏顶栏假数据
+
+    document.getElementById('heroSvgWrap').innerHTML = SVG.hero();
+    const list = document.getElementById('diffList');
+    list.innerHTML = Object.values(DIFFICULTIES).map(d => `
+      <div class="diff-card ${ui.selectedDiff === d.id ? 'selected' : ''}" data-diff="${d.id}">
+        <div>
+          <strong>${d.name}</strong>
+          <div class="small-note">${d.desc}</div>
+        </div>
+        <span class="tag tag-yellow">开局 ¥${d.startCash.toLocaleString()}</span>
+      </div>`).join('');
+    list.querySelectorAll('.diff-card').forEach(el => {
+      el.addEventListener('click', () => { ui.selectedDiff = el.dataset.diff; SFX.click(); showStartScreen(); });
+    });
+
+    const rawSaved = StorageAdapter.get(SAVE_KEY);
+    const btnCont = document.getElementById('btnContinue');
+    if (rawSaved) {
+      const check = validateAndRepairSave(rawSaved);
+      if (check.ok && !check.state.finished) {
+        btnCont.style.display = 'inline-flex';
+        btnCont.textContent = `继续第${check.state.day}天`;
+      } else if (!check.ok) {
+        // V2.6 P2 #13：坏档自动备份并提示
+        StorageAdapter.set(BACKUP_KEY, StorageAdapter.getRaw(SAVE_KEY) || '');
+        StorageAdapter.remove(SAVE_KEY);
+        btnCont.style.display = 'none';
+        showToast(`检测到损坏存档（${check.reason}），已自动备份并重置。`, true, 3000);
+      } else {
+        btnCont.style.display = 'none';
+      }
+    } else {
+      btnCont.style.display = 'none';
+    }
+    document.getElementById('startScreen').style.display = 'flex';
+  }
+
+  function actuallyStartNewGame() {
+    const single = document.getElementById('chkSingleChallenge').checked;
+    state = createInitialState(ui.selectedDiff, single);
+    ui.tab = 'operate';
+    ui.step = 'prep';
+    ui.expandedCartId = state.carts[0].id;
+    document.getElementById('startScreen').style.display = 'none';
+    setTitleChromeVisible(false);
+    saveGame();
+    render();
+    showToast('欢迎推车出摊！先看定价贴士和库存再开摊吧', false, 2000);
+  }
+
+  function bindStaticEvents() {
+    // V2.6 P2 #15：“新开局”覆盖已有存档前弹窗确认
+    document.getElementById('btnStartNew').addEventListener('click', () => {
+      SFX.click();
+      const raw = StorageAdapter.get(SAVE_KEY);
+      const check = raw ? validateAndRepairSave(raw) : { ok: false };
+      if (check.ok && !check.state.finished) {
+        openModal('⚠️ 覆盖已有存档？',
+          `<p style="font-size:13px;">检测到进行中的进度（第${check.state.day}天，治疗账户 ¥${check.state.treatmentFund.toLocaleString()}）。开启新局将覆盖该存档，确定吗？</p>`,
+          [
+            { text: '取消', onClick: closeModal },
+            { text: '确认新开局', cls: 'btn-primary', onClick: () => { closeModal(); SFX.bell(); actuallyStartNewGame(); } }
+          ]);
+      } else {
+        SFX.bell();
+        actuallyStartNewGame();
+      }
+    });
+
+    document.getElementById('btnContinue').addEventListener('click', () => {
+      const raw = StorageAdapter.get(SAVE_KEY);
+      const check = validateAndRepairSave(raw);
+      if (check.ok) {
+        state = check.state;
+        ui.tab = 'operate';
+        ui.step = state.dayPhase === 'settle' ? 'settle' : 'prep';
+        ui.expandedCartId = state.carts[0].id;
+        document.getElementById('startScreen').style.display = 'none';
+        setTitleChromeVisible(false);
+        SFX.click();
+        render();
+      } else {
+        showToast('存档校验失败，已为你安全清理', true);
+        showStartScreen();
+      }
+    });
+
+    document.getElementById('btnRest').addEventListener('click', () => {
+      if (!state) return;
+      SFX.click();
+      if (ui.selling) {
+        ui.paused = !ui.paused;
+        render();
+        showToast(ui.paused ? '已暂停营业，歇一会再继续' : '继续红火营业！');
+      } else {
+        if (state.bossFatigue <= 0) { showToast('老板精力充沛，不需要歇息'); return; }
+        openModal('🍵 歇一会 · 缓解疲劳',
+          `<p style="font-size:13px;">当前老板疲劳度 <strong>${state.bossFatigue}/100</strong>（${getFatigueTierInfo(state.bossFatigue).label}）。花 ¥80 喝杯凉茶歇一会，可立刻降低 25 点疲劳。</p>`,
+          [
+            { text: '先不歇', onClick: closeModal },
+            { text: '歇一会 (-¥80)', cls: 'btn-mint', onClick: () => {
+              if (state.cash < 80) { showToast('现金不足 ¥80', true); return; }
+              state.cash -= 80;
+              state.bossFatigue = Math.max(0, state.bossFatigue - 25);
+              closeModal(); saveGame(); render();
+              showToast('喝了凉茶，疲劳度明显缓解！');
+            }}
+          ]);
+      }
+    });
+
+    document.getElementById('btnSound').addEventListener('click', () => {
+      settings.sound = !settings.sound;
+      saveSettings();
+      if (settings.sound) SFX.click();
+    });
+
+    document.getElementById('btnSettings').addEventListener('click', () => {
+      if (!state) return;
+      SFX.click();
+      openSettingsModal();
+    });
+
+    document.querySelectorAll('.step-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!state) return;
+        if (ui.selling && btn.dataset.step !== 'sell') {
+          showToast('正在出摊营业中，请先收摊或点“歇一会”', false);
+          return;
+        }
+        ui.tab = 'operate';
+        ui.step = btn.dataset.step;
+        SFX.click();
+        render();
+      });
+    });
+
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!state) return;
+        if (ui.selling && btn.dataset.tab !== 'operate') {
+          ui.paused = true;
+          showToast('已自动暂停营业，切回“今日经营”可继续');
+        }
+        ui.tab = btn.dataset.tab;
+        SFX.click();
+        render();
+      });
+    });
+
+    // V2.6 P2 #16：切后台彻底停掉动画循环并保存，切回时恢复
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (ui.liveAnimId) { cancelAnimationFrame(ui.liveAnimId); ui.liveAnimId = null; }
+        if (state) {
+          if (ui.selling && !ui.paused) ui.paused = true;
+          saveGame();
+        }
+      } else {
+        if (ui.selling && !ui.liveAnimId) runCanvasLoop();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      const c = document.getElementById('sellCanvas');
+      if (c && ui.selling) drawStreetScene(c);
+    });
+  }
+
+  window.onload = function() {
+    applySettingsToDOM();
+    bindStaticEvents();
+    showStartScreen();
+  };
+})();
+</script>
+</body>
+</html>
